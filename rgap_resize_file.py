@@ -1,14 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Image file resizer
 
 Usage:
-    rgap_resizefile.py <input> <output> <width> <height>
-    rgap_resizefile.py <input> <width> <height>
-    rgap_resizefile.py <input> <output> -w <width>
-    rgap_resizefile.py <input> -w <width>
-    rgap_resizefile.py <input> <output> -h <height>
-    rgap_resizefile.py <input> -h <height>
-    rgap_resizefile.py -h
+    rgap_resize_file.py <input> <output> <width> <height>
+    rgap_resize_file.py <input> <width> <height>
+    rgap_resize_file.py <input> <output> -w <width>
+    rgap_resize_file.py <input> -w <width>
+    rgap_resize_file.py <input> <output> -h <height>
+    rgap_resize_file.py <input> -h <height>
+    rgap_resize_file.py -h
 
 Arguments:
     input   input image path

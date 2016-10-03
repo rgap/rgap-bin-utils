@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Crops margins of PDFs in a directory
 
 This script makes use of "ImageMagick" library
@@ -9,10 +9,10 @@ It allows converting every pdf file in a specific
 directoty.
 
 Usage:
-    rgap_pdfcrop.py (--c|<input_dir>) <output_dir> [--suffix]
-    rgap_pdfcrop.py (--c|<input_dir>) [--suffix]
+    rgap_pdf2png_dir.py (--c|<input_dir>) <output_dir> [--suffix]
+    rgap_pdf2png_dir.py (--c|<input_dir>) [--suffix]
 
-    rgap_pdfcrop.py -h
+    rgap_pdf2png_dir.py -h
 
 Arguments:
     input_dir   input directory containing images

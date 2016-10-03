@@ -1,15 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Resize images from a directory
 
 Usage:
-    rgap_resizedir.py (--c|<input_dir>) <output_dir> <width> <height> [--suffix]
-    rgap_resizedir.py (--c|<input_dir>) <width> <height> [--suffix]
-    rgap_resizedir.py (--c|<input_dir>) <output_dir> -w <width> [--suffix]
-    rgap_resizedir.py (--c|<input_dir>) -w <width> [--suffix]
-    rgap_resizedir.py (--c|<input_dir>) <output_dir> -h <height> [--suffix]
-    rgap_resizedir.py (--c|<input_dir>) -h <height> [--suffix]
+    rgap_resize_dir.py (--c|<input_dir>) <output_dir> <width> <height> [--suffix]
+    rgap_resize_dir.py (--c|<input_dir>) <width> <height> [--suffix]
+    rgap_resize_dir.py (--c|<input_dir>) <output_dir> -w <width> [--suffix]
+    rgap_resize_dir.py (--c|<input_dir>) -w <width> [--suffix]
+    rgap_resize_dir.py (--c|<input_dir>) <output_dir> -h <height> [--suffix]
+    rgap_resize_dir.py (--c|<input_dir>) -h <height> [--suffix]
 
-    rgap_resizedir.py -h
+    rgap_resize_dir.py -h
 
 Arguments:
     input_dir   input directory containing images
