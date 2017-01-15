@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Crops margins of PDFs in a directory
+"""Crops margins from PDFs in a directory
 
 This script makes use of "pdfcrop" library
 https://www.ctan.org/pkg/pdfcrop
@@ -17,8 +17,8 @@ Usage:
     rgap_pdfcrop.py -h
 
 Arguments:
-    input_dir   input directory containing images
-    output_dir  output directory containing images
+    input_dir   input directory containing pdf files
+    output_dir  output directory containing pdf files
     --c         to make input_dir the current directory
 
 Options:

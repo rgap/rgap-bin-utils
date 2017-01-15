@@ -45,16 +45,18 @@ def main(args):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
+    print(("input_dir = %s\noutput_dir = %s\n") % (input_dir, output_dir))
+
     for input_filename in os.listdir(input_dir):
         output_filename = input_filename
 
+        input_name, input_extension = os.path.splitext(input_filename)
         # Add suffix if necessary
         if suffix:
-            name_suffix = "_resized.pdf"
+            name_suffix = "_resized" + input_extension
             if name_suffix in input_filename:
                 continue
-            output_filename = (os.path.splitext(input_filename)[0] +
-                               name_suffix)
+            output_filename = (input_name + name_suffix)
 
         extensions = [".jpg", ".png", ".gif"]
         is_an_image = any(input_filename.lower().endswith(e)
