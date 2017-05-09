@@ -1,37 +1,39 @@
 #!/usr/bin/env python3
-"""Resize images from a directory
+"""Trim whitespace from images in a directory
 
 Usage:
-    rgap_resize_dir.py (--c|<input_dir>) <output_dir> <width> <height> [--suffix]
-    rgap_resize_dir.py (--c|<input_dir>) <width> <height> [--suffix]
-    rgap_resize_dir.py (--c|<input_dir>) <output_dir> --w <width> [--suffix]
-    rgap_resize_dir.py (--c|<input_dir>) --w <width> [--suffix]
-    rgap_resize_dir.py (--c|<input_dir>) <output_dir> --h <height> [--suffix]
-    rgap_resize_dir.py (--c|<input_dir>) --h <height> [--suffix]
+    rgap_imagecrop.py (--c|<input_dir>) <output_dir> [--suffix]
+    rgap_imagecrop.py (--c|<input_dir>) [--suffix]
 
-    rgap_resize_dir.py -h
+    rgap_imagecrop.py -h
 
 Arguments:
     input_dir   input directory containing images
     output_dir  output directory containing images
-    width       width for the new images
-    height      height for the new images
     --c         to make input_dir the current directory
 
 Options:
-    --suffix    to add a suffixes "_resized.png"
+    --suffix    to add a suffixes "_cropped.pdf"
+
 """
 
 import os
-from PIL import Image
+from PIL import Image, ImageChops
+
+
+def trim(im):
+    bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
+    diff = ImageChops.difference(im, bg)
+    diff = ImageChops.add(diff, diff, 2.0, 0)
+    bbox = diff.getbbox()
+    if bbox:
+        return im.crop(bbox)
 
 
 def main(args):
 
     input_dir = args['<input_dir>']
     output_dir = args['<output_dir>']
-    w = args['<width>']
-    h = args['<height>']
     current_directory = args['--c']
     suffix = args['--suffix']
 
@@ -49,14 +51,16 @@ def main(args):
 
     for input_filename in os.listdir(input_dir):
         output_filename = input_filename
+
         input_name, input_extension = os.path.splitext(input_filename)
         # Add suffix if necessary
         if suffix:
-            name_suffix = "_resized" + input_extension
+            name_suffix = "_cropped" + input_extension
             if name_suffix in input_filename:
                 continue
             output_filename = (input_name + name_suffix)
 
+        # Check if it's an image
         extensions = [".jpg", ".png", ".gif"]
         is_an_image = any(input_filename.lower().endswith(e)
                           for e in extensions)
@@ -64,21 +68,9 @@ def main(args):
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
 
-            # Load image
+            # Load and trim image
             img = Image.open(input_file)
-
-            if w and h:
-                h_new = int(h)
-                w_new = int(w)
-            elif not w:
-                h_new = int(h)
-                w_new = int(h_new * img.width / img.height)
-            elif not h:
-                w_new = int(w)
-                h_new = int(w_new * img.height / img.width)
-
-            # Resize it
-            img = img.resize((w_new, h_new), Image.BILINEAR)
+            img = trim(img)
 
             # Save it back to disk
             img.save(output_file)
