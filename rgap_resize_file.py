@@ -55,7 +55,7 @@ def main(args):
         h_new = int(w_new * img.height / img.width)
 
     # Resize it
-    img = img.resize((w_new, h_new), Image.BILINEAR)
+    img = img.resize((w_new, h_new), Image.BOX)
 
     # Save it back to disk
     img.save(output_file)
