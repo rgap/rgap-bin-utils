@@ -2,9 +2,9 @@
 """This downloads files from a website. To install chromedriver run: "brew install chromedriver".
 
 Usage:
-    rgap_imagegray.py <tag_name> <attr_name> <extension> <base_url>
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url>
 
-    rgap_imagegray.py -h
+    rgap_getfiles.py -h
 
 Arguments:
     tag_name        tag name to search for; e.g. a, audio, etc
@@ -16,9 +16,10 @@ Arguments:
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from urllib.request import urlopen
+from urllib.request import urlretrieve
 from urllib.parse import urlparse, urljoin
 from urllib.error import HTTPError, URLError
+import wget
 import re
 import os
 
@@ -32,11 +33,11 @@ def download(url):
         return 0
     # Open the url
     try:
-        f = urlopen(url)
         print('Downloading:', url)
+        wget.download(url)
         # Open our local file for writing
-        with open(namefile, 'wb') as local_file:
-            local_file.write(f.read())
+        # with open(namefile, 'wb') as local_file:
+        #     local_file.write(f.read())
     # handle errors
     except (HTTPError, e):
         print('HTTP Error:', e.code, url)
