@@ -49,7 +49,8 @@ def main(args):
     xpath = args['<xpath>']
     csv_output = args['<csv_output>']
     attributes = args['<attributes>']
-    attributes = attributes.split(',')
+    if attributes is not None:
+        attributes = attributes.split(',')
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--lang=en")
