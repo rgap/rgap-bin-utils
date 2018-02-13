@@ -1,6 +1,0 @@
-rgap_getfiles.py img src jpg,png,gif http://www.dailymail.co.uk/news/article-2578769/Paw-god-Staggering-transformation-rescued-stray-dog-passers-assumed-trash.html --content_tag
-
-
-
-
-rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/gretaalvarez/cuerpos-irreales?utm_term=.idn0RXvDz2#.wiQdage5v2 --content_tag

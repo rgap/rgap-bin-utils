@@ -2,8 +2,8 @@
 """This downloads files from a website. To install chromedriver run: "brew install chromedriver".
 
 Usage:
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--sel_wait] [--prefix=<prefix>]
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--sel_wait] [--prefix=<prefix>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>]
 
     rgap_getfiles.py -h
 
@@ -17,6 +17,7 @@ Arguments:
     content_tag     automatically find the tag where the content is
     selenium        use selenium
     sel_wait        long selenium wait
+    headless        run selenium driver without opening a window
 
 Examples:
     rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait
@@ -139,10 +140,13 @@ def main(args):
     content_tag = args['--content_tag']
     selenium = args['--selenium']
     sel_wait = args['--sel_wait']
+    headless = args['--headless']
 
     if selenium:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--lang=en")
+        if headless:
+            chrome_options.add_argument("--headless")
         driver = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
         driver.get(base_url)
         if sel_wait:
