@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""This gets content from within a tag given its "xpath" from a site and stores them into a csv file.
+"""Facebook posts from a fan page
 
 Usage:
-    get_fb_posts_fb_page.py <app_id> <app_secret> <page_id> <since_date> <until_date> <output_dir>
-    get_fb_posts_fb_page.py <app_id> <app_secret> <page_id> <since_date> <until_date>
-    get_fb_posts_fb_page.py <app_id> <app_secret> <page_id> <output_dir>
-    get_fb_posts_fb_page.py <app_id> <app_secret> <page_id>
+    rgap_get_fbposts_fb_page.py <app_id> <app_secret> <page_id> <since_date> <until_date> <output_dir>
+    rgap_get_fbposts_fb_page.py <app_id> <app_secret> <page_id> <since_date> <until_date>
+    rgap_get_fbposts_fb_page.py <app_id> <app_secret> <page_id> <output_dir>
+    rgap_get_fbposts_fb_page.py <app_id> <app_secret> <page_id>
 
-    get_fb_posts_fb_page.py -h
+    rgap_get_fbposts_fb_page.py -h
 
 Arguments:
     app_id          facebook app_id

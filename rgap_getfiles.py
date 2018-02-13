@@ -2,7 +2,8 @@
 """This downloads files from a website. To install chromedriver run: "brew install chromedriver".
 
 Usage:
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--prefix=<prefix>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--sel_wait] [--prefix=<prefix>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--sel_wait] [--prefix=<prefix>]
 
     rgap_getfiles.py -h
 
@@ -12,15 +13,24 @@ Arguments:
     extension       extension of the file name to download; e.g. pdf, wav, or pdf,wav etc
     base_url        url that contains the files to download
     prefix          adds a prefix, and it will number the files as it finds them
+    xpath           all files within this xpath
+    content_tag     automatically find the tag where the content is
+    selenium        use selenium
+    sel_wait        long selenium wait
+
+Examples:
+    rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait
 
 """
 
-from bs4 import BeautifulSoup
+from lxml import html
 from selenium import webdriver
-from urllib.request import urlretrieve
+from urllib.request import Request, urlopen
 from urllib.parse import urlparse, urljoin
 from urllib.error import HTTPError, URLError
-import urllib.request
+import time
+import operator
+import shutil
 import re
 import os
 
@@ -40,8 +50,13 @@ def download(url, filename=None):
     # Open the url
     try:
         print("with urllib")
-        urllib.request.urlretrieve(url, filename)
+        req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urlopen(req) as response, open(os.getcwd() + '/' + filename, 'wb') as out_file:
+            shutil.copyfileobj(response, out_file)
+
+        # urllib.request.urlretrieve(url, filename)
     except:
+        print("urllib failed")
         try:
             print("with wget")
             os.system("wget -O {0} {1}".format(filename, url))
@@ -56,57 +71,112 @@ def download(url, filename=None):
         #     local_file.write(f.read())
 
 
-def main(args):
-
-    base_url = args['<base_url>']
-    tag_name = args['<tag_name>']
-    attr_name = args['<attr_name>']
-    extension = args['<extension>']
-    prefix = args['--prefix']
-
-    chrome_options = webdriver.ChromeOptions();
-    chrome_options.add_argument("--lang=en");
-    browser = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
-    browser.get(base_url)
-    html_source = browser.page_source
-    # html_source = urlopen(base_url)
-    soup = BeautifulSoup(html_source, 'html.parser')
+def get_files_urls(base_url, tree, tag_name, attr_name, extension):
 
     p = re.compile("(?:^|(?<=,))[^,]*")
     list_tag_names = re.findall(p, tag_name)
 
     list_tags = []
     for name in list_tag_names:
-        list_tags.extend(soup.find_all(name))
-
-    # print(list_tags)
+        for tree_tag in tree.iter(name):
+            list_tags.append(tree_tag)
 
     list_attr_names = re.findall(p, attr_name)
 
     list_fileurls = []
     for tag in list_tags:
         for attr in list_attr_names:
-            if tag.has_attr(attr):
-                list_fileurls.append(tag[attr])
+            if attr in tag.attrib:
+                list_fileurls.append(tag.attrib[attr])
 
     list_fileurls = set(list_fileurls)
-    list_extensions = re.findall(p, extension)
 
-    # only urls with files with certain extensions
     list_fileurls_withextension = []
-    for url in list_fileurls:
-        for ext in list_extensions:
-            if re.search(ext,  url.lower()):
-                list_fileurls_withextension.append(url)
+    if extension == "":
+        list_fileurls_withextension = list_fileurls
+    else:
+        # only urls with files with certain extensions
+        list_extensions = re.findall(p, extension)
+        for url in list_fileurls:
+            for ext in list_extensions:
+                if re.search(ext,  url.lower()):
+                    list_fileurls_withextension.append(url)
+
+    print("\nFound %s/%s urls %s" % (len(list_fileurls_withextension),
+                                     len(list_fileurls), base_url))
+
+    return list_fileurls_withextension
+
+
+def find_content_tag(tree):
+    dict_ps = {}
+    for tree_tag in tree.iter('p'):
+        # print(id(tree_tag.getparent()))
+        parent = tree_tag.getparent()
+        if parent in dict_ps:
+            dict_ps[parent] += 1
+        else:
+            dict_ps[parent] = 0
+    # print(dict_ps)
+    return max(dict_ps.items(), key=operator.itemgetter(1))[0]
+
+
+def selenium_wait(driver, times, sleep_interval):
+    # To be a bit more sure it loads it all
+    for i in range(1, times):
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight/{});".format(times - i))
+        time.sleep(sleep_interval)
+
+
+def main(args):
+
+    base_url = args['<base_url>']
+    tag_name = args['<tag_name>']
+    attr_name = args['<attr_name>']
+    extension = args['<extension>']
+    xpaths = args['<xpaths>']
+    prefix = args['--prefix']
+    content_tag = args['--content_tag']
+    selenium = args['--selenium']
+    sel_wait = args['--sel_wait']
+
+    if selenium:
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--lang=en")
+        driver = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
+        driver.get(base_url)
+        if sel_wait:
+            selenium_wait(driver, 10, 5)
+        html_source = driver.page_source
+    else:
+        req = Request(base_url, headers={'User-Agent': 'Mozilla'})
+        html_source = urlopen(req).read()
+
+    tree = html.fromstring(html_source)
+
+    # Get tag that contains the main post content
+    if content_tag:
+        tree = find_content_tag(tree)
+
+    list_urls = []
+    if xpaths:
+        xpaths = xpaths.split(',')
+        print(xpaths)
+        for xpath in xpaths:
+            elements = tree.xpath(xpath)
+            for e in elements:
+                list_urls += get_files_urls(base_url, tree, tag_name, attr_name, extension)
+    else:
+        list_urls += get_files_urls(base_url, tree, tag_name, attr_name, extension)
+
+    # print(list_urls)
 
     with open('info.txt', 'a') as local_file:
         try:
-            print("\nFound %s/%s urls %s" % (len(list_fileurls_withextension),
-                                              len(list_fileurls), base_url))
-            for index, url in enumerate(list_fileurls_withextension, start=1):
+            for index, url in enumerate(list_urls, start=1):
                 local_file.write(base_url + ' --- ' + url + '\n')
                 if prefix is not None:
-                    if len(list_fileurls_withextension) == 1:
+                    if len(list_urls) == 1:
                         filename = prefix
                     else:
                         filename = prefix + '_' + str(index)
