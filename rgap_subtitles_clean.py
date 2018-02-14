@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """It cleans a subtitles file.
 
 Usage:
-    rgap_subtitles.py <input> <output>
-    rgap_subtitles.py <input>
+    rgap_subtitles.py <input> <output> [--header=<header>]
+    rgap_subtitles.py <input> [--header=<header>]
 
     rgap_subtitles.py -h
 
 Arguments:
     input   input subtitles file path
     output  output subtitles file path
+    header  what to write in the beginning
 """
 
 import re
@@ -87,15 +89,17 @@ def main(args):
 
     input_file = args['<input>']
     output_file = args['<output>']
+    header = args['--header']
 
     file_encoding = 'utf-8'
     with open(input_file, encoding=file_encoding, errors='replace') as f:
         lines = f.readlines()
         new_lines = clean_up(lines)
-
     if not output_file:
         output_file = os.path.splitext(input_file)[0] + '.txt'
     with open(output_file, 'w') as f:
+        if header:
+            f.write(header + '\n')
         f.write(input_file + '\n\n')
         for i, line in enumerate(new_lines):
             f.write(str(i + 1) + '. ' + line)
