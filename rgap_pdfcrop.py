@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Crops margins from PDFs in a directory
+"""Crops margins of PDFs in a directory
 
-This script makes use of "pdfcrop" library
-https://www.ctan.org/pkg/pdfcrop
+This script makes use of "ImageMagick" library
+http://www.imagemagick.org/script/index.php
+On Mac OS X: brew install imagemagick
 
-Use "pdfcrop" to crop single pdf files
+Uses to "pdfcrop" single pdf files
 
 It allows cropping the margins of PDF files in a specific
 directoty, very useful specially when having a bunch of files

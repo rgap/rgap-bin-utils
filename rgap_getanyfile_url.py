@@ -2,13 +2,14 @@
 """This downloads a file from a url
 
 Usage:
-    rgap_getanyfile_url.py <base_url> <name> [--short]
+    rgap_getanyfile_url.py <base_url> <name> [--short] [--prefix=<prefix>]
 
     rgap_getanyfile_url.py -h
 
 Arguments:
     base_url        url that contains the file to download
     name            filename
+    prefix          prefix to put to the file (for more advanced purposes)
 
 """
 
@@ -57,6 +58,7 @@ def main(args):
     base_url = args['<base_url>']
     name = args['<name>']
     short = args['--short']
+    prefix = args['--prefix']
 
     if short:
         partition = name.split(' ')
@@ -64,6 +66,8 @@ def main(args):
 
     print(urlopen(base_url).getheader('Content-Type'))
     try:
+        if prefix is not None:
+            name = "{}_{}".format(prefix, name)
         download(base_url, name)
     except:
         print("Error downloading:", base_url)

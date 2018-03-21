@@ -14,8 +14,11 @@ Arguments:
     test           for testing this command
 
 Examples:
+    Having a csv with urls where the column "href" contains the urls
     rgap_runargs_fromcsv.py urls.csv rgap_getfiles.py "embed,link,a,audio,source href,src wav,mp3,wma,m4a,ogg <href> --prefix=" --prefix=discussion
 
+    For directly downloading files from a "csv" file, tmp.txt, where the column "url" contains the urls
+    rgap_runargs_fromcsv.py tmp.txt rgap_getanyfile_url.py "<url> magoosh --prefix=" --prefix=grammar
 """
 
 from selenium import webdriver
