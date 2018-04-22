@@ -12,10 +12,9 @@ Arguments:
 
 """
 
-import eyed3
+import mutagen
+from mutagen.id3 import ID3, ID3NoHeaderError
 import os
-import logging
-logging.getLogger("eyed3.mp3.headers").setLevel(logging.CRITICAL)
 
 
 def main(args):
@@ -58,14 +57,16 @@ def main(args):
             output_file = os.path.join(output_dir, output_filename)
 
             print(input_file)
-            audiofile = eyed3.load(input_file)
-            audiofile.tag.artist = artist
-            audiofile.tag.album = album
-            audiofile.tag.album_artist = u""
-            audiofile.tag.title = input_name
-            audiofile.tag.track_num = 0
+            try:
+                audiofile = ID3(input_file)
+            except ID3NoHeaderError:
+                audiofile = mutagen.File(input_file, easy=True)
+                audiofile.add_tags()
+            audiofile['artist'] = artist
+            audiofile['album'] = album
+            audiofile['title'] = input_name
+            audiofile.save(output_file)
 
-            audiofile.tag.save(output_file)
 
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly

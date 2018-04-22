@@ -2,8 +2,8 @@
 """This downloads files from a website. To install chromedriver run: "brew install chromedriver".
 
 Usage:
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>]
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--cookies=<cookies>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--cookies=<cookies>]
 
     rgap_getfiles.py -h
 
@@ -29,6 +29,7 @@ from selenium import webdriver
 from urllib.request import Request, urlopen
 from urllib.parse import urlparse, urljoin
 from urllib.error import HTTPError, URLError
+import pickle
 import time
 import operator
 import shutil
@@ -142,12 +143,20 @@ def main(args):
     sel_wait = args['--sel_wait']
     headless = args['--headless']
 
+    cookies = args['--cookies']
+
     if selenium:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--lang=en")
         if headless:
             chrome_options.add_argument("--headless")
         driver = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
+
+        if cookies:
+            driver.get(base_url)
+            for cookie in pickle.load(open(cookies, "rb")):
+                driver.add_cookie(cookie)
+
         driver.get(base_url)
         if sel_wait:
             selenium_wait(driver, 10, 5)

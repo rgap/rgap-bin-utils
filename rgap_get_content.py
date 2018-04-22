@@ -2,9 +2,9 @@
 """This gets content from within a tag given its "xpath" from a site and stores them into a csv file.
 
 Usage:
-    rgap_collect_content.py <base_url> <xpaths> [--csv=<csv>] [--r] [--attr=<attr>] [--lib_selenium]
+    rgap_get_content.py <base_url> <xpaths> [--csv=<csv>] [--r] [--attr=<attr>] [--lib_selenium] [--cookies=<cookies>] [--trimtext]
 
-    rgap_collect_content.py -h
+    rgap_get_content.py -h
 
 Arguments:
     base_url        main url
@@ -15,19 +15,21 @@ Arguments:
     lib_selenium    use selenium chrome instead of urllib
 
 Examples:
-    rgap_collect_content.py http://www.english-test.net/toefl/listening/ /html/body/center/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[2]/td[2]/table[1]/tbody/tr/td/a --csv=urls.csv --attr=href
+    rgap_get_content.py http://www.english-test.net/toefl/listening/ '/html/body/center/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[2]/td[2]/table[1]/tbody/tr/td/a' --csv=urls.csv --attr=href
 
 """
 
+from slugify import slugify
 from selenium import webdriver
 from urllib.parse import urlparse, urlunparse
 import urllib.request
+import pickle
 from lxml import html
 import csv
 import os
 
 
-def csv_writer(data, attributes, path, reopen):
+def csv_writer(data, attributes, path, reopen, trimtext):
     """
     Write data to a CSV file path
     """
@@ -36,9 +38,12 @@ def csv_writer(data, attributes, path, reopen):
 
     with open(path, reopen) as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
-        if not filexists:
+        if reopen == "w":
             writer.writerow(attributes)
         for line in data:
+            if trimtext:
+                line[0] = line[0].replace('\n', ' ')[:50]
+                line[0] = slugify(line[0])
             writer.writerow(line)
 
 
@@ -60,6 +65,9 @@ def main(args):
     attributes = args['--attr']
     reopen = args['--r']
     lib_selenium = args['--lib_selenium']
+    trimtext = args['--trimtext']
+
+    cookies = args['--cookies']
 
     xpaths = xpaths.split(',')
     if attributes is not None:
@@ -71,6 +79,10 @@ def main(args):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--lang=en")
         browser = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
+        if cookies:
+            browser.get(base_url)
+            for cookie in pickle.load(open(cookies, "rb")):
+                browser.add_cookie(cookie)
         browser.get(base_url)
         html_source = browser.page_source
     tree = html.fromstring(html_source)
@@ -98,7 +110,7 @@ def main(args):
                 print(d)
     else:
         headers = ['text'] + attributes if attributes is not None else ['text']
-        csv_writer(data, headers, csv_output, reopen)
+        csv_writer(data, headers, csv_output, reopen, trimtext)
 
     if lib_selenium:
         browser.close()

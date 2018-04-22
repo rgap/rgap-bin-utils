@@ -57,7 +57,7 @@ def main(args):
                 continue
             output_filename = (input_name + name_suffix)
 
-        extensions = [".jpg", ".png", ".gif"]
+        extensions = [".jpg", ".png", ".gif", ".tif"]
         is_an_image = any(input_filename.lower().endswith(e)
                           for e in extensions)
         if is_an_image:
