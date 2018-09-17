@@ -32,9 +32,10 @@ with open('lazinesscure_proLiveLinks.txt') as f:
         # code = urlopen(req).getcode()
         # print(code)
         base_url = base_url[0:len(base_url)-1]
-        req = Request(base_url, headers={ 'X-Mashape-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' })
+        req = Request(base_url,
+                      headers={'X-Mashape-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'})
         gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)  # Only for gangstars
-        
+
         try:
             code = urlopen(req, context=gcontext).getcode()
             print(code, end=' ')
@@ -50,7 +51,3 @@ with open('lazinesscure_proLiveLinks.txt') as f:
             find_content_tag(soup, url_site)
 
         print()
-
-
-
-

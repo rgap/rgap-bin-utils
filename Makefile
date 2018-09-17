@@ -1,2 +1,2 @@
-all: 
-	chmod +x *
+chmod +x *
+echo "+x"

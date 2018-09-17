@@ -15,7 +15,7 @@ Arguments:
     lib_selenium    use selenium chrome instead of urllib
 
 Examples:
-    rgap_get_content.py http://www.english-test.net/toefl/listening/ '/html/body/center/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[2]/td[2]/table[1]/tbody/tr/td/a' --csv=urls.csv --attr=href
+    rgap_get_content.py http://www.english-test.net/toefl/listening/ '/html/body/center/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[2]/td[2]/table[1]/tbody/tr/td/a' --csv=urls.csv --attr=href --lib_selenium
 
 """
 
@@ -86,11 +86,11 @@ def main(args):
         browser.get(base_url)
         html_source = browser.page_source
     tree = html.fromstring(html_source)
+    # print(html_source)
 
     data = []
     for xpath in xpaths:
         elements = tree.xpath(xpath)
-        # print(elements)
         for e in elements:
             attr_list = []
             attr_list.append(e.text_content())
@@ -99,7 +99,7 @@ def main(args):
                     if attr == 'href':
                         attr_list.append(full_url(base_url, e.attrib['href']))
                     else:
-                        attr_list.append(e.attrib[attr])
+                        attr_list.append(e.get(attr))
             data.append(attr_list)
 
     if csv_output is None:

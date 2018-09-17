@@ -2,8 +2,8 @@
 """It adds a fb live overlay to an image
 
 Usage:
-    rgap_overlayfb_file.py <input> <output> <overlay> [--suffix]
-    rgap_overlayfb_file.py <input> <overlay> [--suffix]
+    rgap_overlayfb_file.py <input> <output> <overlay> [--suffix] [--top0]
+    rgap_overlayfb_file.py <input> <overlay> [--suffix] [--top0]
 
     rgap_overlayfb_file.py -h
 
