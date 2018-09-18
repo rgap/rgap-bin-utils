@@ -61,6 +61,7 @@ def main(args):
     print(output_file)
     img_output.save(output_file)
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
