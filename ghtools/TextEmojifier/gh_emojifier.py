@@ -20,6 +20,7 @@ import nltk
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
+import os
 
 
 def main(args):
@@ -49,13 +50,15 @@ def main(args):
             tokens_clean.append(token)
         return ' '.join(filter(None, tokens_clean))
 
-    stopwords_path = "stopwords_es.txt"
+    script_path = os.path.dirname(os.path.abspath(__file__))
+
+    stopwords_path = script_path + "/stopwords_es.txt"
     with open(stopwords_path, "r") as file:
         stopwords = file.read().splitlines()
         stopwords = [clean_text(s, False) for s in stopwords]
 
-    df_emojis = pd.read_csv('emojis_clean_mod.csv')
-    df_emojis_unique = pd.read_csv('emojisu_clean_mod.csv') # especial emojis like country names
+    df_emojis = pd.read_csv(script_path + '/emojis_clean_mod.csv')
+    df_emojis_unique = pd.read_csv(script_path + '/emojisu_clean_mod.csv') # especial emojis like country names
     df_emojis['es'] = df_emojis['es'].apply(lambda x: clean_text(x))
     df_emojis_unique['es'] = df_emojis_unique['es'].apply(lambda x: clean_text(x, full=False))
 

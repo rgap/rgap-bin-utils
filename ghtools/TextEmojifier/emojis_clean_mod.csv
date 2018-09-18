@@ -616,7 +616,6 @@ alt,en,es
 🌆,cityscape at dusk,paisaje urbano al atardecer
 🌇,sunset,puesta de sol
 🌉,bridge at night,puente en la noche
-🌌,milky way,Vía láctea
 🎠,carousel horse,carrusel de caballos
 🎡,ferris wheel,noria
 🎢,fair,feria
@@ -817,7 +816,7 @@ alt,en,es
 🧢,billed cap,tapa facturada
 ⛑,rescue worker’s helmet,casco del trabajador de rescate
 📿,prayer beads,Rosario
-💄,lipstick,lápiz labial
+💄,lipstick,labial
 💍,ring,anillo
 💎,gem stone,piedra gema
 🔇,muted speaker,altavoz silenciado
@@ -844,12 +843,11 @@ alt,en,es
 🎺,trumpet,trompeta
 🎻,violin,violín
 🥁,drum,tambor
-📱,mobile phone,teléfono móvil
-📲,phone,teléfono móvil
+📱,mobile phone,telefono
+📲,phone,minutos
 ☎,telephone,teléfono
 📞,telephone receiver,receptor de teléfono
 📟,pager,buscapersonas
-📠,fax machine,máquina de fax
 🔋,battery,batería
 🔌,electric plug,Enchufe electrico
 💻,laptop computer,ordenador portátil
@@ -912,11 +910,10 @@ alt,en,es
 📭,open mailbox lowered flag,abrir el buzón bajó la bandera
 📮,postbox,buzón
 🗳,ballot box ballot,boleta electoral
-✏,pencil,lápiz
 🖋,pen,Pluma
 🖊,pen,lapiz
 🖌,paintbrush,Cepillo de pintura
-🖍,crayon,lápiz de color
+🖍,crayon,color
 📝,memo,memorándum
 💼,briefcase,maletín
 📁,file folder,carpeta de archivos
@@ -971,7 +968,6 @@ alt,en,es
 💊,pill,pastilla
 🚪,door,puerta
 🛏,bed,cama
-🛋,couch and lamp,sofá y lámpara
 🚽,toilet,baño
 🚿,shower,ducha
 🛁,bathtub,bañera
@@ -995,13 +991,6 @@ alt,en,es
 🛅,left luggage,dejar equipaje
 ⚠,warning,advertencia
 🚸,children crossing,niños cruzando
-🚫,prohibited,prohibido
-🚳,no bicycles,No Bicicletas
-🚭,no smoking,No Fumar
-🚱,no-water,no-agua
-🚷,no pedestrians,prohibidos los peatones
-📵,no mobile phones,no hay teléfonos móviles
-🔞,18+,18+
 ☢,radioactive,radioactivo
 ☣,biohazard,riesgo biológico
 ⬆,up arrow,flecha arriba
@@ -1054,9 +1043,6 @@ alt,en,es
 🔅,dim,atenuado
 🔆,bright,brillante
 📶,antenna bars,barras de antena
-📳,vibration mode,modo de vibración
-📴,mobile phone off,teléfono móvil apagado
-⚕,medical,médico
 ♾,⊛ infinity,⊛ infinito
 ♻,recycling,reciclaje
 ⚜,fleur-de-lis,flor de lis
@@ -1069,9 +1055,6 @@ alt,en,es
 ✖,heavy multiplication x,multiplicación pesada x
 ❌,cross mark,Marca de la cruz
 ❎,cross mark,de marca cruzada
-➕,heavy plus sign,signo más pesado
-➖,heavy minus sign,signo menos pesado
-➗,heavy division sign,signo de división pesada
 ➰,curly loop,bucle rizado
 ➿,double curly loop,doble rizo
 〽,part alternation mark,marca de alternancia parcial
