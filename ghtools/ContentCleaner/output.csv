@@ -1,15 +1,45 @@
 title,content,status,publish_date,categories,tags
-TITLE 1,"CONTENT P 1.
+,"<h2>TITLE 1</h2>
+
+<p>CONTENT P 1.</p>
 
 <h2>SUBTITLE</h2>
 
-CONTENT P 2.
+<p>CONTENT.</p>
 
-END!",draft,2018-09-16 19:03:24,trading,
-TITLE 2,"CONTENT P 1.
+<h2>INGREDIENTES:</h2>
+
+<h2>ITEM 1</h2>
+
+<h2>ITEM 2</h2>
+
+<h2>PREPARACION:</h2>
+
+<h2>ITEM 1</h2>
+
+<h2>ITEM 2</h2>
+
+<p>END!</p>
+",draft,2018-10-05 18:02:02,,
+,"<h2>TITLE 2</h2>
+
+<p>CONTENT P 2.</p>
 
 <h2>SUBTITLE</h2>
 
-CONTENT P 2.
+<p>CONTENT.</p>
 
-END!",draft,2018-09-16 19:03:24,finance,
+<h2>INGREDIENTES:</h2>
+
+<h2>ITEM 1</h2>
+
+<h2>ITEM 2</h2>
+
+<h2>PREPARACION:</h2>
+
+<h2>ITEM 1</h2>
+
+<h2>ITEM 2</h2>
+
+<p>END!</p>
+",draft,2018-10-05 18:02:02,,
