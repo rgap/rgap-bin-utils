@@ -122,7 +122,7 @@ alt,en,es
 💙,blue heart,corazón azul
 💜,purple heart,corazón Purpura
 🖤,heart,corazón
-💯,hundred points,cien puntos
+💯,hundred,cien
 💢,anger,ira
 💥,collision,colisión
 💫,dizzy,mareado
@@ -205,8 +205,6 @@ alt,en,es
 🤦‍♀️,womanpalming,womanpalming
 🤷‍♂️,man shrugging,hombre encogiéndose de hombros
 🤷‍♀️,woman shrugging,mujer encogiéndose de hombros
-👨‍⚕️,man health worker,hombre trabajador de salud
-👩‍⚕️,woman health worker,trabajadora de la salud
 👨‍🎓,man student,estudiante hombre
 👩‍🎓,woman student,estudiante de mujer
 👨‍🏫,man teacher,hombre maestro
@@ -220,7 +218,6 @@ alt,en,es
 👨‍🔧,man mechanic,hombre mecánico
 👩‍🔧,woman mechanic,mecánico mujer
 👨‍🏭,man factory worker,hombre obrero
-👩‍🏭,woman factory worker,mujer trabajadora
 👨‍💼,man office worker,hombre oficinista
 👩‍💼,woman office worker,oficinista
 👨‍🔬,man scientist,hombre científico
@@ -243,8 +240,6 @@ alt,en,es
 🕵️‍♀️,woman detective,mujer detective
 💂‍♂️,man guard,hombre guardia
 💂‍♀️,woman guard,mujer guardia
-👷‍♂️,man construction worker,hombre trabajador de la construcción
-👷‍♀️,woman construction worker,trabajador de la construcción de mujer
 🤴,prince,Príncipe
 👸,princess,princesa
 👳‍♂️,man wearing turban,hombre con turbante
@@ -285,8 +280,6 @@ alt,en,es
 🕴,man in suit levitating,hombre en traje levitando
 👯‍♂️,men bunny ears,orejas de conejo hombres
 👯‍♀️,women bunny ears,orejas de conejo de mujer
-🧖‍♂️,man in steamy room,hombre en la habitación de vapor
-🧖‍♀️,woman in steamy room,mujer en habitación humeante
 🧗‍♂️,man climbing,hombre escalando
 🧗‍♀️,woman climbing,mujer escalada
 🤺,person fencing,esgrima
@@ -456,7 +449,7 @@ alt,en,es
 🌼,blossom,flor
 🌷,tulip,tulipán
 🌱,seedling,planta de semillero
-🌲,evergreen tree,árbol de hoja perenne
+🌲,tree,árbol
 🌳,deciduous tree,árbol caducifolio
 🌴,palm tree,palmera
 🌵,cactus,cactus
@@ -465,7 +458,7 @@ alt,en,es
 ☘,shamrock,trébol
 🍀,four leaf clover,trébol de cuatro hojas
 🍁,maple leaf,hoja de arce
-🍂,arbol,arbol
+🍂,hoja,hoja
 🍃,leaf fluttering in wind,hoja revoloteando en el viento
 🍇,grapes,uvas
 🍈,melon,melón
@@ -474,8 +467,7 @@ alt,en,es
 🍋,lemon,limón
 🍌,banana,plátano
 🍍,pineapple,piña
-🍎,red apple,manzana roja
-🍏,green apple,manzana verde
+🍎,apple,manzana
 🍐,pear,Pera
 🍑,peach,melocotón
 🍒,cherries,guindas
@@ -483,7 +475,7 @@ alt,en,es
 🥝,kiwi fruit,kiwi
 🍅,tomato,tomate
 🥥,coconut,Coco
-🥑,avocado,aguacate
+🥑,avocado,aguacate palta
 🍆,eggplant,berenjena
 🥔,potato,patata
 🥕,carrot,Zanahoria
@@ -494,7 +486,7 @@ alt,en,es
 🍄,mushroom,seta
 🥜,peanuts,miseria
 🌰,chestnut,castaña
-🍞,bread,pan de molde
+🍞,bread,pan
 🥐,croissant,cuerno
 🥖,baguette bread,pan de baguette
 🥨,pretzel,galleta
@@ -516,18 +508,18 @@ alt,en,es
 🍳,cooking,cocina
 🥘,shallow pan of food,bandeja de comida poco profunda
 🍲,food,comida
-🥣,bowl spoon,cuchara de cuenco
+🥣,bowl,pocillo cuenco
 🥗,green salad,ensalada verde
-🍿,popcorn,palomitas de maiz
+🍿,popcorn,popcorn
 🥫,canned food,comida enlatada
 🍱,bento box,caja bento
 🍘,rice cracker,galleta de arroz
-🍙,rice ball,bola de arroz
+🍙,rice-ball,arroz-bola
 🍚,rice,arroz
 🍛,curry rice,arroz al curry
 🍜,steaming bowl,cuenco humeante
 🍝,spaghetti,espaguetis
-🍠,roasted sweet potato,batata asada
+🍠,papa,papa
 🍢,oden,oden
 🍣,sushi,Sushi
 🍤,fried shrimp,camaron
@@ -536,7 +528,7 @@ alt,en,es
 🦀,crab,cangrejo
 🦐,shrimp,camarón
 🦑,squid,calamar
-🍦,soft ice cream,helado suave
+🍦,ice-cream,helado
 🍧,icecream,helado
 🍨,ice cream,helado
 🍩,doughnut,rosquilla
@@ -558,7 +550,7 @@ alt,en,es
 🍺,beer,cerveza
 🍻,beer,cerveza
 🥂,clinking glasses,vidrios tintineantes
-🥤,cup straw,taza de paja
+🥤,straw,sorbete
 🥢,chopsticks,palillos
 🍽,fork and knife plate,tenedor y cuchillo
 🍴,fork and knife,tenedor y cuchillo
@@ -615,7 +607,6 @@ alt,en,es
 🌅,sunrise,amanecer
 🌆,cityscape at dusk,paisaje urbano al atardecer
 🌇,sunset,puesta de sol
-🌉,bridge at night,puente en la noche
 🎠,carousel horse,carrusel de caballos
 🎡,ferris wheel,noria
 🎢,fair,feria
@@ -685,9 +676,9 @@ alt,en,es
 🛎,bellhop bell,campana
 ⌛,hourglass done,reloj de arena hecho
 ⏳,hourglass not done,reloj de arena no hecho
-⌚,watch,reloj
-⏰,alarm clock,despertador
-⏱,stopwatch,cronógrafo
+⌚,watch,reloj minutos hora segundos
+⏰,alarm clock,despertador minutos hora segundos
+⏱,stopwatch,cronógrafo minutos hora segundos
 🕰,mantelpiece clock,reloj
 🌙,crescent moon,Luna
 🌚,new moon,Luna
@@ -731,7 +722,7 @@ alt,en,es
 ✨,sparkles,destellos
 🎈,balloon,globo
 🎉,party popper,aguafiestas
-🎊,confetti ball,bola de confeti
+🎊,confetti,confeti
 🎋,tanabata tree,árbol tanabata
 🎍,pine decoration,decoración de pino
 🎎,Japanese dolls,Muñecas japonesas
@@ -746,14 +737,14 @@ alt,en,es
 🎖,military medal,medalla militar
 🏆,trophy,trofeo
 🏅,sports medal,medalla deportiva
-⚽,soccer ball,balón de fútbol
+⚽,soccer,fútbol
 ⚾,baseball,béisbol
 🏀,basketball,baloncesto
 🏐,volleyball,voleibol
-🏈,american football,fútbol americano
+🏈,football,fútbol
 🏉,rugby football,rugby fútbol
 🎾,tennis,tenis
-🎳,bowling,bolos
+🎳,bowling,bolos-juego
 🏏,cricket game,juego de cricket
 🏑,field hockey,hockey sobre hierba
 🏓,ping pong,ping pong
@@ -769,8 +760,8 @@ alt,en,es
 🛷,sled,trineo
 🥌,curling stone,piedra que se encrespa
 🎯,direct hit,golpe directo
-🎱,pool 8 ball,piscina 8 bolas
-🔮,crystal ball,bola de cristal
+🎱,pool,billar
+🔮,crystal,cristal
 🎮,video game,videojuego
 🕹,joystick,palanca de mando
 🎰,slot machine,casino
@@ -811,18 +802,16 @@ alt,en,es
 👢,woman’s boot,bota de mujer
 👑,crown,corona
 👒,woman’s hat,sombrero de mujer
-🎩,top hat,sombrero de copa
+🎩,hat,sombrero
 🎓,graduation cap,gorro de graduación
-🧢,billed cap,tapa facturada
-⛑,rescue worker’s helmet,casco del trabajador de rescate
+⛑,rescue,rescate
 📿,prayer beads,Rosario
 💄,lipstick,labial
 💍,ring,anillo
 💎,gem stone,piedra gema
-🔇,muted speaker,altavoz silenciado
-🔈,speaker low volume,altavoz de bajo volumen
-🔉,speaker medium volume,volumen medio del altavoz
-🔊,speaker high volume,altavoz de alto volumen
+🔈,speaker,altavoz
+🔉,speaker,altavoz
+🔊,speaker,altavoz
 📢,loudspeaker,altoparlante
 📣,megaphone,megáfono
 📯,postal horn,cuerno postal
@@ -844,7 +833,6 @@ alt,en,es
 🎻,violin,violín
 🥁,drum,tambor
 📱,mobile phone,telefono
-📲,phone,minutos
 ☎,telephone,teléfono
 📞,telephone receiver,receptor de teléfono
 📟,pager,buscapersonas
@@ -857,8 +845,7 @@ alt,en,es
 🖱,computer mouse,ratón de computadora
 🖲,trackball,trackball
 💽,computer disk,disco de la computadora
-💾,floppy disk,disco flexible
-💿,optical disk,disco óptico
+💿,disk,cd disco
 📀,dvd,DVD
 🧮,⊛ abacus,⊛ ábaco
 🎥,movie,cine
@@ -879,7 +866,6 @@ alt,en,es
 📖,open book,libro abierto
 📗,green book,libro Verde
 📘,blue book,libro Azul
-📙,orange book,libro naranja
 📚,books,libros
 📓,notebook,cuaderno
 📒,ledger,libro mayor
@@ -895,7 +881,6 @@ alt,en,es
 💴,yen banknote,yen
 💵,dollar banknote,dinero
 💶,euro banknote,euros
-💸,money wings,alas de dinero
 💳,credit card,tarjeta de crédito
 💹,chart increasing yen,tabla de aumento de yenes
 💲,heavy dollar sign,dinero
@@ -971,7 +956,7 @@ alt,en,es
 🚽,toilet,baño
 🚿,shower,ducha
 🛁,bathtub,bañera
-🛒,shopping cart,carrito de compras
+🛒,shopping cart,compras
 🚬,cigarette,cigarrillo
 ⚰,coffin,ataúd
 ⚱,funeral urn,urna funeraria
@@ -980,7 +965,6 @@ alt,en,es
 🚮,litter in bin sign,basura en el signo de bin
 🚰,potable water,agua potable
 ♿,wheelchair,ruedas
-🚹,men’s room,Cuarto de hombres
 🚺,women’s room,habitación de mujeres
 🚻,restroom,Area de aseo
 🚼,baby,bebé
@@ -1074,10 +1058,6 @@ alt,en,es
 #️⃣,keycap: #,keycap: #
 *️⃣,keycap: *,keycap: *
 🔤,letters,letras
-🅰,A (blood type),Un (tipo de sangre)
-🆎,AB (blood type),AB (tipo de sangre)
-🅱,B (blood type),B (tipo de sangre)
-🆑,CL,CL
 🆒,COOL,COOL
 🆓,FREE,LIBRE
 ℹ,information,información
@@ -1096,7 +1076,7 @@ alt,en,es
 ⬜,white,blanco
 ⬛,cuadrado,cuadrado
 🔻,red triangle pointed down,triángulo rojo apuntando hacia abajo
-💠,diamond a dot,diamante un punto
+💠,diamond,diamante
 🔘,radio,radio
 🏁,chequered flag,bandera a cuadros
 🚩,triangular flag,bandera triangular

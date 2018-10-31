@@ -21,13 +21,14 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 import os
+import re
 
 
 def main(args):
 
     input_file = args['<input>']
     wordnet_lemmatizer = WordNetLemmatizer()
-    stemmer = SnowballStemmer("spanish")
+    stemmer = SnowballStemmer("spanish", ignore_stopwords=False)
     pattern = r"""(?x)                            # set flag to allow verbose regexps
                   (?:[a-zA-Z]\.)+                 # abbreviations, e.g. U.S.A.
                   |[a-zA-Z]+(?:[-'*][a-zA-Z]+)*   # words w/ optional internal hyphens/apostrophe
@@ -35,15 +36,17 @@ def main(args):
                 """
     tokenizer = nltk.RegexpTokenizer(pattern)
 
-    def clean_text(text, full=True):
+    def clean_text(text, full=True, trace=False):
         tokens = text.split(' ')
         tokens_clean = []
         for token in tokens:
             token = token.lower()
             if full:
+                token = unidecode(token)
                 token = token if token not in stopwords else ''
                 token = tokenizer.tokenize(token)[0] if tokenizer.tokenize(token) != [] else ''
-            token = unidecode(token)
+            if trace is True:
+                print(text, ' --> ', token)
             if full:
                 # token = stemmer.stem(token)
                 token = wordnet_lemmatizer.lemmatize(token) 
@@ -97,31 +100,25 @@ def main(args):
 
     processed = []
 
-    words = inputs.split(' ')
+    # words = inputs.split()
+    words = re.split('(\W)', inputs)
+    # print(words)
     for word in words:
-        token = clean_text(word)
-        emoji = get_emoji(token)
+        token = clean_text(word, trace=False)
+        if token is '':
+            emoji = ''
+        else:
+            emoji = get_emoji(token)
         if emoji is '':
             processed.append(word)
         else:
-            # print(word)
-            if '.' in word:
-                word = word.replace('.', ' {}.'.format(emoji), 1)
-                processed.append(word)
-            elif ',' in word:
-                word = word.replace(',', ' {},'.format(emoji), 1)
-                processed.append(word)
-            elif '\n' in word:
-                word = word.replace('\n', ' {}\n'.format(emoji), 1)
-                processed.append(word) 
-            else:
-                processed.append(word)
-                processed.append(emoji)
+            processed.append(word)
+            processed.append(' ' + emoji)
 
     # print(df_emojis['']) # this should be always empty
 
     # Rejoin
-    output = ' '.join(processed)
+    output = ''.join(processed)
     text_file = open("output.txt", "w")
     text_file.write(output)
     text_file.close()
