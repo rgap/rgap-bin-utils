@@ -21,6 +21,7 @@ Arguments:
 
 Examples:
     rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait
+    rgap_getfiles.py img src jpg,png,gif https://rolloid.net/25-cosas-increibles-que-no-sabias-que-existian/
 
 """
 

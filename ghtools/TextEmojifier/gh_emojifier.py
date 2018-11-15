@@ -48,8 +48,8 @@ def main(args):
             if trace is True:
                 print(text, ' --> ', token)
             if full:
-                # token = stemmer.stem(token)
-                token = wordnet_lemmatizer.lemmatize(token) 
+                token = stemmer.stem(token)
+                # token = wordnet_lemmatizer.lemmatize(token) 
             tokens_clean.append(token)
         return ' '.join(filter(None, tokens_clean))
 

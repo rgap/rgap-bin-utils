@@ -286,8 +286,6 @@ alt,en,es
 🏇,horse racing,las carreras de caballos
 ⛷,skier,esquiador
 🏂,snowboarder,snowboarder
-🏌️‍♂️,man golfing,hombre jugando golf
-🏌️‍♀️,woman golfing,mujer jugando al golf
 🏄‍♂️,man surfing,hombre surf
 🏄‍♀️,woman surfing,mujer surf
 🚣‍♂️,man rowing boat,hombre
@@ -306,10 +304,6 @@ alt,en,es
 🤸‍♀️,woman cartwheeling,mujer voltereta
 🤼‍♂️,men wrestling,hombres luchando
 🤼‍♀️,women wrestling,mujeres luchando
-🤽‍♂️,man playing water polo,hombre jugando waterpolo
-🤽‍♀️,woman playing water polo,mujer jugando waterpolo
-🤾‍♂️,man playing handball,hombre jugando balonmano
-🤾‍♀️,woman playing handball,mujer jugando balonmano
 🤹‍♂️,man juggling,hombre haciendo malabares
 🤹‍♀️,woman juggling,mujer malabares
 🧘‍♂️,man in lotus position,hombre en posición de loto
@@ -474,7 +468,6 @@ alt,en,es
 🍓,strawberry,fresa
 🥝,kiwi fruit,kiwi
 🍅,tomato,tomate
-🥥,coconut,Coco
 🥑,avocado,aguacate palta
 🍆,eggplant,berenjena
 🥔,potato,patata
@@ -488,13 +481,12 @@ alt,en,es
 🌰,chestnut,castaña
 🍞,bread,pan
 🥐,croissant,cuerno
-🥖,baguette bread,pan de baguette
+🥖,baguette bread,baguette
 🥨,pretzel,galleta
 🥞,pancakes,panqueques
 🧀,cheese,queso
 🍖,meat on bone,carne en hueso
-🍗,poultry leg,pierna de ave
-🥩,meat,carne
+🍗,poultry leg,carne
 🥓,bacon,tocino
 🍔,hamburger,hamburguesa
 🍟,french-fries,papas-fritas
@@ -555,7 +547,7 @@ alt,en,es
 🍽,fork and knife plate,tenedor y cuchillo
 🍴,fork and knife,tenedor y cuchillo
 🥄,spoon,cuchara
-🔪,kitchen knife,cuchillo de cocina
+🔪,kitchen knife,cuchillo
 🏺,amphora,ánfora
 🌍,globe showing Europe-Africa,globo que muestra Europa-África
 🌎,globe showing Americas,globo que muestra las Américas
@@ -573,10 +565,6 @@ alt,en,es
 🏟,stadium,estadio
 🏛,classical building,edificio clásico
 🏗,building construction,Construcción de edificio
-🏘,houses,casas
-🏚,derelict house,casa abandonada
-🏠,house,casa
-🏡,house garden,casa de jardín
 🏢,office building,edificio de oficinas
 🏣,Japanese post office,Oficina de correos japonesa
 🏤,post office,oficina postal
@@ -587,7 +575,6 @@ alt,en,es
 🏪,convenience store,tienda de conveniencia
 🏫,school,colegio
 🏬,department store,almacenes
-🏭,factory,fábrica
 🏯,Japanese castle,Castillo japonés
 🏰,castle,castillo
 💒,wedding,Boda
@@ -605,8 +592,6 @@ alt,en,es
 🏙,cityscape,paisaje urbano
 🌄,sunrise,sol
 🌅,sunrise,amanecer
-🌆,cityscape at dusk,paisaje urbano al atardecer
-🌇,sunset,puesta de sol
 🎠,carousel horse,carrusel de caballos
 🎡,ferris wheel,noria
 🎢,fair,feria
@@ -617,7 +602,6 @@ alt,en,es
 🚅,bullet train,tren bala
 🚆,train,tren
 🚇,metro,metro
-🚈,light rail,tren ligero
 🚉,station,estación
 🚊,tram,tranvía
 🚝,monorail,monocarril
@@ -676,7 +660,6 @@ alt,en,es
 🛎,bellhop bell,campana
 ⌛,hourglass done,reloj de arena hecho
 ⏳,hourglass not done,reloj de arena no hecho
-⌚,watch,reloj minutos hora segundos
 ⏰,alarm clock,despertador minutos hora segundos
 ⏱,stopwatch,cronógrafo minutos hora segundos
 🕰,mantelpiece clock,reloj
@@ -699,7 +682,6 @@ alt,en,es
 🌧,cloud rain,lluvia de nubes
 🌨,cloud snow,nube de nieve
 🌩,cloud lightning,nube de rayos
-🌪,tornado,tornado
 🌫,fog,niebla
 🌬,wind,viento
 🌀,cyclone,ciclón
@@ -707,7 +689,6 @@ alt,en,es
 🌂,closed umbrella,paraguas cerrado
 ☂,umbrella,paraguas
 ☔,umbrella rain drops,gotas de lluvia paraguas
-⛱,umbrella on ground,paraguas en el suelo
 ⚡,high voltage,Alto voltaje
 ❄,snowflake,copo de nieve
 ☃,snowman,monigote de nieve
@@ -799,7 +780,6 @@ alt,en,es
 👟,running shoe,Zapatos para correr
 👠,high-heeled shoe,zapato de tacón alto
 👡,woman’s sandal,sandalia de mujer
-👢,woman’s boot,bota de mujer
 👑,crown,corona
 👒,woman’s hat,sombrero de mujer
 🎩,hat,sombrero
@@ -882,17 +862,16 @@ alt,en,es
 💵,dollar banknote,dinero
 💶,euro banknote,euros
 💳,credit card,tarjeta de crédito
-💹,chart increasing yen,tabla de aumento de yenes
 💲,heavy dollar sign,dinero
 ✉,envelope,carta
 📧,e-mail,correo electrónico
 📨,incoming envelope,sobre entrante
 📩,envelope arrow,flecha de sobre
 📦,package,paquete
-📫,closed mailbox raised flag,buzón cerrado bandera levantada
-📪,closed mailbox lowered flag,el buzón cerrado bajó la bandera
-📬,open mailbox raised flag,abrir el buzón levantado bandera
-📭,open mailbox lowered flag,abrir el buzón bajó la bandera
+📫,closed mailbox raised flag,buzón
+📪,closed mailbox lowered flag,el buzón
+📬,open mailbox raised flag,abrir el buzón
+📭,open mailbox lowered flag,abrir el buzón
 📮,postbox,buzón
 🗳,ballot box ballot,boleta electoral
 🖋,pen,Pluma
@@ -903,7 +882,6 @@ alt,en,es
 💼,briefcase,maletín
 📁,file folder,carpeta de archivos
 📂,open file folder,abrir la carpeta de archivos
-🗂,card index dividers,divisores de índice de tarjeta
 📅,calendar,calendario
 📆,calendar,calendario
 🗒,spiral notepad,Bloc de notas en espiral
@@ -931,14 +909,13 @@ alt,en,es
 🗝,old key,llave vieja
 🔨,hammer,martillo
 ⛏,pick,recoger
-⚒,hammer and pick,martillo y pico
 🛠,hammer and wrench,martillo y llave
 🗡,dagger,daga
 ⚔,crossed swords,espadas cruzadas
 🔫,pistol,pistola
 🏹,bow and arrow,arco y flecha
 🛡,shield,proteger
-🔧,wrench,llave inglesa
+🔧,wrench,llave
 🔩,nut and bolt,tuerca y el perno
 ⚙,gear,engranaje
 🗜,clamp,abrazadera
@@ -1041,9 +1018,6 @@ alt,en,es
 ❎,cross mark,de marca cruzada
 ➰,curly loop,bucle rizado
 ➿,double curly loop,doble rizo
-〽,part alternation mark,marca de alternancia parcial
-✳,eight-spoked asterisk,asterisco de ocho rayos
-✴,eight-pointed star,estrella de ocho puntas
 ❇,sparkle,brillar
 ‼,double exclamation mark,doble exclamación
 ⁉,exclamation question mark,signo de interrogación de exclamación
