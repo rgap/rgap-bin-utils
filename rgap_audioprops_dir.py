@@ -14,6 +14,7 @@ Arguments:
 
 import mutagen
 from mutagen.id3 import ID3, ID3NoHeaderError
+from mutagen.easyid3 import EasyID3
 import os
 
 
@@ -58,7 +59,7 @@ def main(args):
 
             print(input_file)
             try:
-                audiofile = ID3(input_file)
+                audiofile = EasyID3(input_file)
             except ID3NoHeaderError:
                 audiofile = mutagen.File(input_file, easy=True)
                 audiofile.add_tags()

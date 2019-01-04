@@ -44,7 +44,7 @@ alt,en,es
 🤤,drooling,babeando
 😴,sleeping,dormido
 🤒,thermometer,termómetro
-🤕,head-bandage,vendaje de la cabeza
+🤕,head-bandage,vendaje
 🤢,nauseated,náuseas
 🤮,vomiting,vómitos
 🤧,sneezing,estornudando
@@ -110,13 +110,14 @@ alt,en,es
 💖,sparkling heart,corazón resplandeciente
 💗,growing heart,corazón creciente
 💓,beating heart,corazón palpitante
+👠,high-heel,tacón
 💞,revolving hearts,corazones giratorios
 💕,two hearts,dos corazones
 💟,heart decoration,decoración del corazón
 ❣,heavy heart exclamation,fuerte exclamación de corazón
 💔,broken heart,corazón roto
 ❤,red heart,corazón rojo
-🧡,orange heart,corazón naranja
+🧡,heart,corazón
 💛,yellow heart,corazón amarillo
 💚,green heart,corazón verde
 💙,blue heart,corazón azul
@@ -164,7 +165,6 @@ alt,en,es
 👐,open hands,manos abiertas
 🤲,palms up together,palmas juntas
 🤝,handshake,apretón de manos
-🙏,folded hands,manos dobladas
 ✍,writing hand,escribiendo la mano
 💅,nail polish,esmalte de uñas
 🤳,selfie,selfie
@@ -251,7 +251,6 @@ alt,en,es
 🤰,pregnant woman,mujer embarazada
 🤱,breast-feeding,amamantamiento
 👼,baby angel,Ángel bebé
-🎅,Santa Claus,Papá Noel
 🤶,Mrs. Claus,Sra. Claus
 🧙‍♂️,man mage,hombre mago
 🧙‍♀️,woman mage,mago mujer
@@ -341,9 +340,6 @@ alt,en,es
 👩‍👧,"family woman, girl",mujer de familia
 👩‍👧‍👦,"family woman, girl, boy",mujer de familia
 👩‍👧‍👧,"family woman, girl, girl",mujer de familia
-🗣,speaking head,hablando de cabeza
-👤,bust in silhouette,busto en silueta
-👥,busts in silhouette,bustos en silueta
 👣,footprints,huellas
 🐵,monkey,mono
 🐒,monkey,mono
@@ -403,7 +399,7 @@ alt,en,es
 🐧,penguin,pingüino
 🕊,dove,paloma
 🦅,eagle,águila
-🦆,duck,pato
+🦆,duck,ganzo
 🦉,owl,búho
 🐸,frog,rana
 🐊,crocodile,cocodrilo
@@ -447,7 +443,6 @@ alt,en,es
 🌳,deciduous tree,árbol caducifolio
 🌴,palm tree,palmera
 🌵,cactus,cactus
-🌾,sheaf of rice,gavilla de arroz
 🌿,herb,hierba
 ☘,shamrock,trébol
 🍀,four leaf clover,trébol de cuatro hojas
@@ -457,7 +452,7 @@ alt,en,es
 🍇,grapes,uvas
 🍈,melon,melón
 🍉,watermelon,sandía
-🍊,tangerine,Mandarina
+🍊,tangerine orange,Mandarina naranja
 🍋,lemon,limón
 🍌,banana,plátano
 🍍,pineapple,piña
@@ -488,16 +483,15 @@ alt,en,es
 🍖,meat on bone,carne en hueso
 🍗,poultry leg,carne
 🥓,bacon,tocino
-🍔,hamburger,hamburguesa
+🍔,hamburger,sandwich hamburguesa
 🍟,french-fries,papas-fritas
 🍕,pizza,Pizza
 🌭,hot dog,Pancho
 🥪,sandwich,emparedado
 🌮,taco,taco
 🌯,burrito,burrito
-🥙,bread,pan
+🥙,sandwich hamburger,sandwich hamburguesa
 🥚,egg,huevo
-🍳,cooking,cocina
 🥘,shallow pan of food,bandeja de comida poco profunda
 🍲,food,comida
 🥣,bowl,pocillo cuenco
@@ -505,10 +499,7 @@ alt,en,es
 🍿,popcorn,popcorn
 🥫,canned food,comida enlatada
 🍱,bento box,caja bento
-🍘,rice cracker,galleta de arroz
-🍙,rice-ball,arroz-bola
 🍚,rice,arroz
-🍛,curry rice,arroz al curry
 🍜,steaming bowl,cuenco humeante
 🍝,spaghetti,espaguetis
 🍠,papa,papa
@@ -544,7 +535,7 @@ alt,en,es
 🥂,clinking glasses,vidrios tintineantes
 🥤,straw,sorbete
 🥢,chopsticks,palillos
-🍽,fork and knife plate,tenedor y cuchillo
+🍽,eat,comer
 🍴,fork and knife,tenedor y cuchillo
 🥄,spoon,cuchara
 🔪,kitchen knife,cuchillo
@@ -556,7 +547,6 @@ alt,en,es
 🗺,world map,mapa del mundo
 🗾,map of Japan,mapa de Japón
 🏔,snow-capped,nieve
-🌋,volcano,volcán
 🗻,mount fuji,Monte Fuji
 🏖,beach,playa
 🏜,desert,Desierto
@@ -585,7 +575,6 @@ alt,en,es
 🕍,synagogue,sinagoga
 ⛩,shinto shrine,Santuario sintoísta
 🕋,kaaba,Kaaba
-⛲,fountain,fuente
 ⛺,tent,tienda
 🌁,foggy,brumoso
 🌃,night stars,estrellas nocturnas
@@ -616,7 +605,6 @@ alt,en,es
 🚓,police car,coche de policía
 🚔,oncoming police car,coche de policía que se aproxima
 🚕,taxi,taxi
-🚖,oncoming taxi,taxi que viene
 🚗,automobile,automóvil
 🚘,oncoming automobile,automóvil que se aproxima
 🚙,sport utility vehicle,vehículo utilitario deportivo
@@ -649,7 +637,6 @@ alt,en,es
 🛩,airplane,avión
 🛫,airplane,avión
 🛬,airplane,avión
-💺,seat,asiento
 🚁,helicopter,helicóptero
 🚟,suspension railway,ferrocarril de suspensión
 🚠,mountain cableway,teleférico de montaña
@@ -732,7 +719,6 @@ alt,en,es
 🏸,badminton,bádminton
 🥊,boxing glove,guante de boxeo
 🥋,martial arts uniform,uniforme de artes marciales
-🥅,goal net,meta neta
 ⛳,flag in hole,bandera en el agujero
 ⛸,ice skate,patinar sobre hielo
 🎣,fishing pole,caña de pescar
@@ -753,7 +739,6 @@ alt,en,es
 ♣,club suit,traje de club
 ♟,⊛ chess pawn,⊛ peón de ajedrez
 🃏,joker,bromista
-🀄,mahjong red dragon,dragón rojo mahjong
 🎴,flower playing cards,naipes de flores
 🎭,performing arts,las artes escénicas
 🖼,framed picture,Foto enmarcada
@@ -765,7 +750,6 @@ alt,en,es
 👖,jeans,pantalones
 🧣,scarf,bufanda
 🧤,gloves,guantes
-🧥,coat,capa
 🧦,socks,calcetines
 👗,dress,vestir
 👘,kimono,kimono
@@ -778,7 +762,6 @@ alt,en,es
 🎒,backpack,mochila
 👞,man’s shoe,zapato de hombre
 👟,running shoe,Zapatos para correr
-👠,high-heeled shoe,zapato de tacón alto
 👡,woman’s sandal,sandalia de mujer
 👑,crown,corona
 👒,woman’s hat,sombrero de mujer
@@ -796,7 +779,6 @@ alt,en,es
 📣,megaphone,megáfono
 📯,postal horn,cuerno postal
 🔔,bell,campana
-🔕,bell slash,golpe de campana
 🎼,musical score,puntuación musical
 🎵,musical note,nota musical
 🎶,musical notes,notas musicales
@@ -846,9 +828,7 @@ alt,en,es
 📖,open book,libro abierto
 📗,green book,libro Verde
 📘,blue book,libro Azul
-📚,books,libros
 📓,notebook,cuaderno
-📒,ledger,libro mayor
 📃,page curl,curl de la página
 📜,scroll,voluta
 📄,page facing up,página hacia arriba
@@ -865,8 +845,6 @@ alt,en,es
 💲,heavy dollar sign,dinero
 ✉,envelope,carta
 📧,e-mail,correo electrónico
-📨,incoming envelope,sobre entrante
-📩,envelope arrow,flecha de sobre
 📦,package,paquete
 📫,closed mailbox raised flag,buzón
 📪,closed mailbox lowered flag,el buzón
@@ -874,7 +852,6 @@ alt,en,es
 📭,open mailbox lowered flag,abrir el buzón
 📮,postbox,buzón
 🗳,ballot box ballot,boleta electoral
-🖋,pen,Pluma
 🖊,pen,lapiz
 🖌,paintbrush,Cepillo de pintura
 🖍,crayon,color
@@ -903,8 +880,6 @@ alt,en,es
 🗑,wastebasket,papelera
 🔒,locked,bloqueado
 🔓,unlocked,desbloqueado
-🔏,locked pen,pluma cerrada
-🔐,locked key,tecla bloqueada
 🔑,key,llave
 🗝,old key,llave vieja
 🔨,hammer,martillo
@@ -1038,7 +1013,6 @@ alt,en,es
 🆔,ID,ID
 🆕,NEW,NUEVO
 🆖,NG,NG
-🅾,O (blood type),O (tipo de sangre)
 🆗,OK,Aceptar
 🆘,SOS,SOS
 🆙,UP!,¡ARRIBA!
