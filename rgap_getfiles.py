@@ -2,8 +2,8 @@
 """This downloads files from a website. To install chromedriver run: "brew install chromedriver".
 
 Usage:
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--cookies=<cookies>]
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--cookies=<cookies>]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--nocookies]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--nocookies]
 
     rgap_getfiles.py -h
 
@@ -105,7 +105,7 @@ def get_files_urls(base_url, tree, tag_name, attr_name, extension):
                 if re.search(ext,  url.lower()):
                     list_fileurls_withextension.append(url)
 
-    print("\nFound %s/%s urls %s" % (len(list_fileurls_withextension),
+    print("\nFound %s requested items out of %s tags %s" % (len(list_fileurls_withextension),
                                      len(list_fileurls), base_url))
 
     return list_fileurls_withextension
@@ -144,19 +144,16 @@ def main(args):
     sel_wait = args['--sel_wait']
     headless = args['--headless']
 
-    cookies = args['--cookies']
+    nocookies = args['--nocookies']
 
     if selenium:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--lang=en")
+        if not nocookies:
+            chrome_options.add_argument("user-data-dir=/Users/rgap/rgap_bin/selenium") 
         if headless:
             chrome_options.add_argument("--headless")
         driver = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
-
-        if cookies:
-            driver.get(base_url)
-            for cookie in pickle.load(open(cookies, "rb")):
-                driver.add_cookie(cookie)
 
         driver.get(base_url)
         if sel_wait:
