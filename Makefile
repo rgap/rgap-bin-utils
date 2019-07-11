@@ -1,2 +1,2 @@
-chmod +x *
+chmod -R +x *
 echo "+x"

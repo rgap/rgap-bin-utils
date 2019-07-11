@@ -132,7 +132,7 @@ alt,en,es
 🕳,hole,agujero
 💣,bomb,bomba
 💬,speech balloon,globo de discurso
-👁️‍🗨️,eye in speech bubble,ojo en el bocadillo
+👁️‍🗨️,eye,ojo
 🗨,left speech bubble,burbuja de discurso izquierda
 🗯,right anger bubble,burbuja de ira derecha
 💭,thought balloon,globo de pensamiento
@@ -307,11 +307,10 @@ alt,en,es
 🤹‍♀️,woman juggling,mujer malabares
 🧘‍♂️,man in lotus position,hombre en posición de loto
 🧘‍♀️,woman in lotus position,mujer en posición de loto
-🛀,person taking bath,baño de toma de persona
+🛀,bath,ducha
 🛌,person in bed,persona en la cama
-👫,man and woman holding hands,hombre y mujer tomados de la mano
-👬,two men holding hands,dos hombres tomados de la mano
-👭,two women holding hands,dos mujeres tomados de la mano
+👬,gays,gays
+👭,mujeres,mujeres
 👩‍❤️‍💋‍👨,"kiss woman, man",besar mujer
 👨‍❤️‍💋‍👨,"kiss man, man",besar hombre
 👩‍❤️‍💋‍👩,"kiss woman, woman",beso mujer
@@ -406,8 +405,8 @@ alt,en,es
 🐢,turtle,Tortuga
 🦎,lizard,lagartija
 🐍,snake,serpiente
-🐲,dragon,continuar
-🐉,dragon,continuar
+🐲,dragon,dragon
+🐉,dragon,dragon
 🦕,sauropod,saurópodo
 🦖,T-Rex,Tirano saurio Rex
 🐳,spouting whale,escupiendo ballena
@@ -547,7 +546,7 @@ alt,en,es
 🗺,world map,mapa del mundo
 🗾,map of Japan,mapa de Japón
 🏔,snow-capped,nieve
-🗻,mount fuji,Monte Fuji
+🗻,mountain,montaña
 🏖,beach,playa
 🏜,desert,Desierto
 🏝,desert island,isla desierta
@@ -628,7 +627,7 @@ alt,en,es
 ⚓,anchor,ancla
 ⛵,sailboat,velero
 🛶,canoe,canoa
-🚤,speedboat,lancha rápida
+🚤,speedboat,lancha
 🛳,passenger ship,buque de pasajeros
 ⛴,ferry,transportar
 🛥,motor boat,lancha
@@ -643,7 +642,7 @@ alt,en,es
 🚡,aerial tramway,teleférico
 🛰,satellite,satélite
 🚀,rocket,cohete
-🛸,flying saucer,Platillo volador
+🛸,ufo alien,ovni alien
 🛎,bellhop bell,campana
 ⌛,hourglass done,reloj de arena hecho
 ⏳,hourglass not done,reloj de arena no hecho
@@ -676,7 +675,7 @@ alt,en,es
 🌂,closed umbrella,paraguas cerrado
 ☂,umbrella,paraguas
 ☔,umbrella rain drops,gotas de lluvia paraguas
-⚡,high voltage,Alto voltaje
+⚡,voltage,voltaje
 ❄,snowflake,copo de nieve
 ☃,snowman,monigote de nieve
 ⛄,snowman without snow,muñeco de nieve sin nieve
@@ -692,7 +691,6 @@ alt,en,es
 🎉,party popper,aguafiestas
 🎊,confetti,confeti
 🎋,tanabata tree,árbol tanabata
-🎍,pine decoration,decoración de pino
 🎎,Japanese dolls,Muñecas japonesas
 🎏,carp streamer,streamer de la carpa
 🎐,wind chime,carillón de viento
@@ -715,12 +713,11 @@ alt,en,es
 🎳,bowling,bolos-juego
 🏏,cricket game,juego de cricket
 🏑,field hockey,hockey sobre hierba
-🏓,ping pong,ping pong
+🏓,ping-pong,ping-pong
 🏸,badminton,bádminton
 🥊,boxing glove,guante de boxeo
-🥋,martial arts uniform,uniforme de artes marciales
-⛳,flag in hole,bandera en el agujero
-⛸,ice skate,patinar sobre hielo
+🥋,costume,traje disfraz
+⛳,flag,bandera
 🎣,fishing pole,caña de pescar
 🎽,running shirt,camisa de correr
 🎿,skis,esquís
@@ -800,8 +797,8 @@ alt,en,es
 📟,pager,buscapersonas
 🔋,battery,batería
 🔌,electric plug,Enchufe electrico
-💻,laptop computer,ordenador portátil
-🖥,desktop computer,computadora de escritorio
+💻,laptop computer,laptop computadora
+🖥,computer,computadora
 🖨,printer,impresora
 ⌨,keyboard,teclado
 🖱,computer mouse,ratón de computadora
@@ -824,14 +821,13 @@ alt,en,es
 💡,light bulb,bombilla
 🔦,flashlight,flash
 📔,notebook,cuaderno
-📕,closed book,libro cerrado
-📖,open book,libro abierto
-📗,green book,libro Verde
-📘,blue book,libro Azul
+📕,closed book,libro
+📖,open book,libro
+📗,green book,libro
+📘,blue book,libro
 📓,notebook,cuaderno
-📃,page curl,curl de la página
 📜,scroll,voluta
-📄,page facing up,página hacia arriba
+📄,page facing up,página
 📰,newspaper,periódico
 🗞,rolled-up newspaper,periódico enrollado
 📑,bookmark tabs,pestañas de marcadores
@@ -864,8 +860,8 @@ alt,en,es
 🗒,spiral notepad,Bloc de notas en espiral
 🗓,spiral calendar,calendario espiral
 📇,card index,fichero
-📈,chart increasing,tabla creciente
-📉,chart decreasing,disminución de la tabla
+📈,increasing diagram,diagrama creciente
+📉,decreasing diagram,diagrama decreciente
 📊,chart,grafico
 📋,clipboard,portapapeles
 📌,pushpin,chincheta
@@ -945,11 +941,6 @@ alt,en,es
 ⤵,right arrow curving down,flecha derecha curvándose hacia abajo
 🔃,clockwise vertical arrows,flechas verticales en sentido horario
 🔄,counterclockwise arrows,de flechas hacia la izquierda
-🔙,BACK arrow,VOLVER flecha
-🔚,END arrow,Flecha END
-🔛,ON! arrow,¡EN! flecha
-🔜,SOON arrow,PRONTO arrow
-🔝,TOP arrow,Flecha superior
 🛐,place of worship,lugar de adoración
 ⚛,atom,átomo
 🕉,om,om
@@ -963,16 +954,15 @@ alt,en,es
 🔁,repeat,de repetición
 🔂,repeat single,de repetición
 ▶,next play,de play siguiente
-⏩,fast-forward,de avance rápido
+⏩,right forward,derecha
 ⏯,play or pause,reproducir o pausar
 ◀,reverse,de retroceso
-⏪,fast reverse,de retroceso rápido
+⏪,reverse left,izquierda
 🔼,upwards,hacia arriba
-⏫,fast up,de subir rápido
+⏫,up,subir
 🔽,downwards,hacia abajo
 ⏬,fast down,de bajada rápida
 ⏸,pause,de pausa
-⏹,stop,Detener
 ⏺,record,grabar
 ⏏,eject,de expulsión
 🎦,cinema,cine
@@ -1008,10 +998,9 @@ alt,en,es
 *️⃣,keycap: *,keycap: *
 🔤,letters,letras
 🆒,COOL,COOL
-🆓,FREE,LIBRE
+🆓,FREE,GRATIS
 ℹ,information,información
 🆔,ID,ID
-🆕,NEW,NUEVO
 🆖,NG,NG
 🆗,OK,Aceptar
 🆘,SOS,SOS

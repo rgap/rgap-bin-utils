@@ -30,11 +30,11 @@ def main(args):
                    for e in extensions)
     if is_audio:
         print(input_file)
-            try:
-                audiofile = ID3(input_file)
-            except ID3NoHeaderError:
-                audiofile = mutagen.File(input_file, easy=True)
-                audiofile.add_tags()
+        try:
+            audiofile = ID3(input_file)
+        except ID3NoHeaderError:
+            audiofile = mutagen.File(input_file, easy=True)
+            audiofile.add_tags()
 
         audiofile['artist'] = artist
         audiofile['album'] = album

@@ -13,7 +13,7 @@ Arguments:
     extension       extension of the file name to download; e.g. pdf, wav, or pdf,wav etc
     base_url        url that contains the files to download
     prefix          adds a prefix, and it will number the files as it finds them
-    xpath           all files within this xpath
+    xpath           all tags within the xpaths separated by commas
     content_tag     automatically find the tag where the content is
     selenium        use selenium
     sel_wait        long selenium wait
@@ -22,9 +22,11 @@ Arguments:
 Examples:
     rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait
     rgap_getfiles.py img src jpg,png,gif https://rolloid.net/25-cosas-increibles-que-no-sabias-que-existian/
+    rgap_getfiles.py a href "" https://easychair.org/conferences/submissions?a=21984264 '//tr/td[@class="center"][2]/a' --selenium
 
 """
 
+import pyperclip
 from lxml import html
 from selenium import webdriver
 from urllib.request import Request, urlopen
@@ -73,16 +75,19 @@ def download(url, filename=None):
         # with open(filename, 'wb') as local_file:
         #     local_file.write(f.read())
 
-
-def get_files_urls(base_url, tree, tag_name, attr_name, extension):
+def get_files_urls(driver, base_url, tree, tag_name, attr_name, extension):
 
     p = re.compile("(?:^|(?<=,))[^,]*")
-    list_tag_names = re.findall(p, tag_name)
-
-    list_tags = []
-    for name in list_tag_names:
-        for tree_tag in tree.iter(name):
-            list_tags.append(tree_tag)
+    
+    # If they are xpaths, then the tags (list_tags) were already found
+    if tag_name is None:
+        list_tags = tree
+    else:
+        list_tag_names = re.findall(p, tag_name)
+        list_tags = []
+        for name in list_tag_names:
+            for tree_tag in tree.iter(name):
+                list_tags.append(tree_tag)
 
     list_attr_names = re.findall(p, attr_name)
 
@@ -150,10 +155,20 @@ def main(args):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--lang=en")
         if not nocookies:
-            chrome_options.add_argument("user-data-dir=/Users/rgap/rgap_bin/selenium") 
+            chrome_options.add_argument("user-data-dir=/Users/rgap/rgap_bin/selenium_session") 
         if headless:
             chrome_options.add_argument("--headless")
+
+        # default download folder
+        prefs = {
+            'download.default_directory': os.getcwd(),
+            'download.prompt_for_download': False,
+            'download.directory_upgrade': True,
+            'safebrowsing.enabled': False,
+            'safebrowsing.disable_download_protection': True}
+        chrome_options.add_experimental_option('prefs', prefs)
         driver = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
+        driver.set_window_size(500, 500)
 
         driver.get(base_url)
         if sel_wait:
@@ -164,6 +179,8 @@ def main(args):
         html_source = urlopen(req).read()
 
     tree = html.fromstring(html_source)
+    # pyperclip.copy(html_source)
+
 
     # Get tag that contains the main post content
     if content_tag:
@@ -172,13 +189,11 @@ def main(args):
     list_urls = []
     if xpaths:
         xpaths = xpaths.split(',')
-        print(xpaths)
         for xpath in xpaths:
             elements = tree.xpath(xpath)
-            for e in elements:
-                list_urls += get_files_urls(base_url, tree, tag_name, attr_name, extension)
+            list_urls += get_files_urls(driver, base_url, elements, None, attr_name, extension)
     else:
-        list_urls += get_files_urls(base_url, tree, tag_name, attr_name, extension)
+        list_urls += get_files_urls(driver, base_url, tree, tag_name, attr_name, extension)
 
     # print(list_urls)
 
@@ -193,7 +208,9 @@ def main(args):
                         filename = prefix + '_' + str(index)
                 else:
                     filename = None
-                download(urljoin(base_url, url), filename)
+                driver.get(urljoin(base_url, url))
+                time.sleep(2000)
+                # download(urljoin(base_url, url), filename)
         except:
             print("Error downloading:", tag_name, attr_name, extension, base_url)
 
