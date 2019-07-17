@@ -14,6 +14,7 @@ Arguments:
 
 import youtube_dl
 import os
+from urllib.parse import urlparse, parse_qs
 
 
 class MyLogger(object):
