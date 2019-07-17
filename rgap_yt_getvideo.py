@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Downloads a youtube video subtitles and cleans it
+"""Downloads a youtube audio
 
 Usage:
-    rgap_yt_getsubtitles.py <url> [--lang=lang]
+    rgap_yt_getvideo.py <url> [--q=q]
 
-    rgap_yt_getsubtitles.py -h
+    rgap_yt_getvideo.py -h
 
 Arguments:
     url        url of the youtube video
-    lang       language; e.g. en, es. It is English by default
+    q          video quality
+
+Examples:
+    rgap_yt_getvideo.py https://www.youtube.com/watch?v=J---aiyznGQ --q=best
 """
 
 import youtube_dl
 import os
+from urllib.parse import urlparse, parse_qs
 
 
 class MyLogger(object):
@@ -39,18 +43,22 @@ def my_hook(d):
         print('Error')
 
 
-def subtitle_downloader(url, lang):
-    subtitle_tmpl = '%(title)s.%(ext)s'
+def video_downloader(url, quality):
+
+    if quality == 'best':
+        # Download best mp4 format available or any other best if no mp4 available
+        q = 'bestvideo+bestaudio[ext=m4a]/best/best'
+    else:
+        # Download best format available but no better than 480p
+        q = 'bestvideo[height<=480]+bestaudio/best[height<=480]'
     ydl_opts = {
-        'logger': MyLogger(),
-        'progress_hooks': [my_hook],  # only works when downloading videos
-        'subtitlesformat': 'vtt',
-        'subtitleslangs': [lang],
-        'skip_download': True,
-        # 'allsubtitles': True,
-        # 'writesubtitles': True,
-        'writeautomaticsub': True,
-        'outtmpl': subtitle_tmpl,  # DEFAULT_OUTTMPL = '%(title)s-%(id)s.%(ext)s'
+    'format': q,
+    'postprocessors': [{
+        'key': 'FFmpegVideoConvertor',
+        'preferedformat': 'mp4',
+    }],
+    'logger': MyLogger(),
+    'progress_hooks': [my_hook],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         # info = ydl.extract_info(url)
@@ -64,26 +72,12 @@ def subtitle_downloader(url, lang):
     return "{}".format(filename)
 
 
-def clean_subs(file_name, header):
-    print("Cleaning")
-    file_name.replace('"', "'")
-    cmd = [
-        "rgap_subtitles_clean.py",
-        '"{}"'.format(file_name),
-        "--header=" + header
-    ]
-    os.system(" ".join(cmd))
-
-
 def main(args):
     url = args['<url>']
-    lang = args['--lang']
-    if lang is None:
-        lang = 'en'
+    quality = args['--q']
 
-    subtitles_file = subtitle_downloader(url, lang)
-    print(subtitles_file)
-    clean_subs(subtitles_file, url)
+    file = video_downloader(url, quality)
+    print(file)
 
 
 if __name__ == "__main__":

@@ -3,9 +3,9 @@
 """It adds emojis next to word matches.
 
 Usage:
-    py <input>
+    gh_emojifier.py <input>
 
-    py -h
+    gh_emojifier.py -h
 
 Arguments:
     input   input content file

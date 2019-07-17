@@ -3,10 +3,10 @@
 output will have the whole size
 
 Usage:
-    py (--c|<input_dir>) <output_dir> <width> <height>
-    py (--c|<input_dir>) <width> <height> [--nosuffix]
+    gh_thumbnail_dir.py (--c|<input_dir>) <output_dir> <width> <height>
+    gh_thumbnail_dir.py (--c|<input_dir>) <width> <height> [--nosuffix]
 
-    py -h
+    gh_thumbnail_dir.py -h
 
 Arguments:
     input_dir   input directory containing images

@@ -3,10 +3,10 @@
 will have the whole size
 
 Usage:
-    py <input> <output> <width> <height>
-    py <input> <width> <height> [--nosuffix]
+    gh_thumbnail_file.py <input> <output> <width> <height>
+    gh_thumbnail_file.py <input> <width> <height> [--nosuffix]
 
-    py -h
+    gh_thumbnail_file.py -h
 
 Arguments:
     input   input image path
