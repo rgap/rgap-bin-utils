@@ -75,7 +75,7 @@ def download(url, filename=None):
         # with open(filename, 'wb') as local_file:
         #     local_file.write(f.read())
 
-def get_files_urls(driver, base_url, tree, tag_name, attr_name, extension):
+def get_files_urls(base_url, tree, tag_name, attr_name, extension):
 
     p = re.compile("(?:^|(?<=,))[^,]*")
     
@@ -191,9 +191,9 @@ def main(args):
         xpaths = xpaths.split(',')
         for xpath in xpaths:
             elements = tree.xpath(xpath)
-            list_urls += get_files_urls(driver, base_url, elements, None, attr_name, extension)
+            list_urls += get_files_urls(base_url, elements, None, attr_name, extension)
     else:
-        list_urls += get_files_urls(driver, base_url, tree, tag_name, attr_name, extension)
+        list_urls += get_files_urls(base_url, tree, tag_name, attr_name, extension)
 
     # print(list_urls)
 
@@ -208,9 +208,12 @@ def main(args):
                         filename = prefix + '_' + str(index)
                 else:
                     filename = None
-                driver.get(urljoin(base_url, url))
-                time.sleep(2000)
-                # download(urljoin(base_url, url), filename)
+
+                if selenium:    
+                    driver.get(urljoin(base_url, url))
+                    time.sleep(2000)
+                else: 
+                    download(urljoin(base_url, url), filename)
         except:
             print("Error downloading:", tag_name, attr_name, extension, base_url)
 
