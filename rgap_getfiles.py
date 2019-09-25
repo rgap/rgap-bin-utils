@@ -2,27 +2,31 @@
 """This downloads files from a website. To install chromedriver run: "brew install chromedriver".
 
 Usage:
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--nocookies]
-    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> [--content_tag] [--selenium] [--headless] [--sel_wait] [--prefix=<prefix>] [--nocookies]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> [--content_tag] [--download_again] [--selenium]  [--selenium_download][--headless] [--sel_wait] [--sel_waitscroll] [--prefix=<prefix>] [--nocookies]
+    rgap_getfiles.py <tag_name> <attr_name> <extension> <base_url> <xpaths> 
 
     rgap_getfiles.py -h
 
 Arguments:
-    tag_name        tag name to search for; e.g. a, audio, etc
-    attr_name       attribute name that contains the file url; e.g. href, src, etc
-    extension       extension of the file name to download; e.g. pdf, wav, or pdf,wav etc
-    base_url        url that contains the files to download
-    prefix          adds a prefix, and it will number the files as it finds them
-    xpath           all tags within the xpaths separated by commas
-    content_tag     automatically find the tag where the content is
-    selenium        use selenium
-    sel_wait        long selenium wait
-    headless        run selenium driver without opening a window
+    tag_name              tag name to search for; e.g. a, audio, etc
+    attr_name             attribute name that contains the file url; e.g. href, src, etc
+    extension             extension of the file name to download; e.g. pdf, wav, or pdf,wav etc
+    base_url              url that contains the files to download
+    prefix                adds a prefix, and it will number the files as it finds them
+    xpath                 all tags within the xpaths separated by commas
+    content_tag           automatically find the tag where the content is
+    selenium              use selenium
+    selenium_download     download by getting the url with selenium
+    sel_wait              long selenium wait
+    sel_waitscroll        long selenium wait + scroll
+    headless              run selenium driver without opening a window
+    download_again        download even if the file exists
 
 Examples:
-    rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait
+    rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait --selenium_download
     rgap_getfiles.py img src jpg,png,gif https://rolloid.net/25-cosas-increibles-que-no-sabias-que-existian/
-    rgap_getfiles.py a href "" https://easychair.org/conferences/submissions?a=21984264 '//tr/td[@class="center"][2]/a' --selenium
+    rgap_getfiles.py a href "" https://easychair.org/conferences/submissions?a=21984264 '//tr/td[@class="center"][2]/a' --selenium --selenium_download
+    rgap_getfiles.py a href pdf 'https://web.stanford.edu/group/sisl/k12/optimization' --selenium --sel_wait --download_again
 
 """
 
@@ -40,14 +44,14 @@ import re
 import os
 
 
-def download(url, filename=None):
+def download(url, filename=None, download_again=False):
     urlfile = urlparse(os.path.basename(url)).path
     if filename is None:
         filename = urlfile
     else:
         extension = os.path.splitext(urlfile)[1]
         filename += extension
-    if os.path.isfile(filename):
+    if not download_again and os.path.isfile(filename):
         print("Already exists", filename)
         return 0
     print('filename: ', filename)
@@ -129,12 +133,22 @@ def find_content_tag(tree):
     return max(dict_ps.items(), key=operator.itemgetter(1))[0]
 
 
-def selenium_wait(driver, times, sleep_interval):
+def selenium_wait(driver, sleep_time):
+    time.sleep(sleep_time)
+
+def selenium_scrollbottom(driver, times, sleep_interval):
     # To be a bit more sure it loads it all
     for i in range(1, times):
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight/{});".format(times - i))
         time.sleep(sleep_interval)
 
+def get_fullurl(base_url, url):
+    if 'https://' in url or 'http://' in url:
+        full_url = url
+    else:
+        # full_url = base_url + '/' + url
+        full_url = urljoin(base_url, url)
+    return full_url
 
 def main(args):
 
@@ -146,8 +160,11 @@ def main(args):
     prefix = args['--prefix']
     content_tag = args['--content_tag']
     selenium = args['--selenium']
+    selenium_download = args['--selenium_download']
     sel_wait = args['--sel_wait']
+    sel_waitscroll = args['--sel_waitscroll']
     headless = args['--headless']
+    download_again = args['--download_again']
 
     nocookies = args['--nocookies']
 
@@ -170,9 +187,12 @@ def main(args):
         driver = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
         driver.set_window_size(500, 500)
 
-        driver.get(base_url)
+        driver.get(base_url) 
         if sel_wait:
-            selenium_wait(driver, 10, 5)
+            selenium_wait(driver, 5)
+        if sel_waitscroll:
+            selenium_scrollbottom(driver, 10, 5)
+
         html_source = driver.page_source
     else:
         req = Request(base_url, headers={'User-Agent': 'Mozilla'})
@@ -209,11 +229,14 @@ def main(args):
                 else:
                     filename = None
 
-                if selenium:    
-                    driver.get(urljoin(base_url, url))
+                full_url = get_fullurl(base_url, url)
+
+                if selenium_download:  # TODO
+                    driver.get(full_url)
                     time.sleep(2000)
                 else: 
-                    download(urljoin(base_url, url), filename)
+                    print(full_url)
+                    download(full_url, filename, download_again)
         except:
             print("Error downloading:", tag_name, attr_name, extension, base_url)
 
