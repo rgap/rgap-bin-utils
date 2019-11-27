@@ -30,6 +30,9 @@ Options:
                                              the case of two numbers they are
                                              also used for right and bottom.
 
+Examples:
+    rgap_pdfcrop.py --c --margins="0 0"
+
 """
 
 import os
@@ -72,7 +75,7 @@ def main(args):
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
 
-            command = ("pdfcrop %s %s ") % (input_file, output_file)
+            command = ("pdfcrop '%s' '%s' ") % (input_file, output_file)
             if margins is not None:
                 command += (" --margins '%s'") % (margins)
 
