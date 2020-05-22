@@ -1,26 +1,23 @@
 #!/usr/bin/env python3
-"""Crops margins of PDFs in a directory
-
-This script makes use of "ImageMagick" library
-http://www.imagemagick.org/script/index.php
-On Mac OS X: brew install imagemagick
-
-It allows converting every pdf file in a specific
-directoty.
+"""PDF Compression
+It uses https://blog.omgmog.net/post/compressing-pdf-from-your-mac-or-linux-terminal-with-ghostscript/
 
 Usage:
-    rgap_pdf2png_dir.py (--c|<input_dir>) <output_dir> [--suffix]
-    rgap_pdf2png_dir.py (--c|<input_dir>) [--suffix]
+    rgap_pdfcompress.py (--c|<input_dir>) <output_dir> [--suffix]
+    rgap_pdfcompress.py (--c|<input_dir>) [--suffix]
 
-    rgap_pdf2png_dir.py -h
+    rgap_pdfcompress.py -h
 
 Arguments:
-    input_dir   input directory containing images
-    output_dir  output directory containing images
+    input_dir   input directory containing pdf files
+    output_dir  output directory containing pdf files
     --c         to make input_dir the current directory
 
 Options:
-    --suffix                                 to add a suffixes "_conv.png"
+    --suffix                                 to add a suffixes "_compressed.pdf"
+
+Examples:
+    rgap_pdfcompress.py --c
 
 """
 
@@ -49,31 +46,32 @@ def main(args):
     for input_filename in os.listdir(input_dir):
         output_filename = input_filename
 
-        name_suffix = ".png"
         # Add suffix if necessary
         if suffix:
-            name_suffix = "_conv.png"
+            name_suffix = "_compressed.pdf"
             if name_suffix in input_filename:
                 continue
-        output_filename = (os.path.splitext(input_filename)[0] +
-                           name_suffix)
+            output_filename = (os.path.splitext(input_filename)[0] +
+                               name_suffix)
 
         # Check if it's a pdf
         is_a_pdf = input_filename.lower().endswith(".pdf")
         if is_a_pdf:
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
+            tmp_file = os.path.join(input_dir, os.path.splitext(input_filename)[0] + '_#00tmp.pdf')
+            os.system("cp {} {}".format(input_file, tmp_file))
 
-            command = (("convert -density 400 -flatten '%s' '%s'") %
-                       (input_file, output_file))
-
-            # Run command
+            command = "gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/screen -dCompatibilityLevel=1.4 -sOutputFile={} {}".format(output_file, tmp_file)
+            print(command)
+            # Run pdfcrop command
             try:
                 os.system(command)
             except:
-                print("error on convert")
+                print("error on compresspdf")
                 raise
             # print(output_file)
+            os.system("rm {}".format(tmp_file))
         else:
             continue
 

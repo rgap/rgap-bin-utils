@@ -18,6 +18,7 @@ Examples:
     rgap_runargs_dir.py convert "<input_filename> -crop <object.width>x<object.height>-0-15 <output_filename>" --prefix=conv --filetypes "jpg,png,gif"
     rgap_runargs_dir.py "ffmpeg" " -i <input_filename> <output_filename>.mp3" --filetypes "mp4"
     rgap_runargs_dir.py "ffmpeg" " -i <input_filename> -filter:v scale=800:-1 -c:a copy <output_filename>" --filetypes "mp4" --prefix="v"
+    rgap_runargs_dir.py "ffmpeg" " -i '<input_filename>' -vf 'scale=iw/2:ih/2' -c:v libx264 -c:a copy '<output_filename>.mp4'" --filetypes "ts"
 
 """
 

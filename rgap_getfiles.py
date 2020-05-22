@@ -68,7 +68,7 @@ def download(url, filename=None, download_again=False):
         print("urllib failed")
         try:
             print("with wget")
-            os.system("wget -O {0} {1}".format(filename, url))
+            os.system('wget -O "{0}" "{1}"'.format(filename, url))
         # handle errors
         except (HTTPError, e):
             print('HTTP Error:', e.code, url)
