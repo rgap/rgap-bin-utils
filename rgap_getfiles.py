@@ -34,17 +34,39 @@ import pyperclip
 from lxml import html
 from selenium import webdriver
 from urllib.request import Request, urlopen
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin, parse_qs
 from urllib.error import HTTPError, URLError
 import pickle
 import time
 import operator
 import shutil
+import gdown
 import re
 import os
 
 
 def download(url, filename=None, download_again=False):
+    if 'drive.google.com' in url:
+        download_from_gdrive(url, filename=filename, download_again=download_again)
+    else:
+        download_file(url, filename=filename, download_again=download_again)
+
+def download_from_gdrive(url, filename=None, download_again=False):
+
+    if 'file/d/' in url:
+        file_id = re.search('file/d/(.*)/', url)
+        file_id = file_id if file_id else re.search('file/d/(.*)', url)
+        file_id = file_id.group(1)
+    else:
+        parsed = urlparse(url)
+        file_id = parse_qs(parsed.query)['id'][0]
+    uc_url = 'https://drive.google.com/uc?id=' + file_id
+    print('Downloading', uc_url)
+    gdown.download(uc_url, None, quiet=False) 
+    
+
+def download_file(url, filename=None, download_again=False):
+
     urlfile = urlparse(os.path.basename(url)).path
     if filename is None:
         filename = urlfile
@@ -107,16 +129,29 @@ def get_files_urls(base_url, tree, tag_name, attr_name, extension):
     if extension == "":
         list_fileurls_withextension = list_fileurls
     else:
-        # only urls with files with certain extensions
-        list_extensions = re.findall(p, extension)
-        for url in list_fileurls:
-            for ext in list_extensions:
-                if re.search(ext,  url.lower()):
+        # special urls
+        if 'drive' in extension:
+            extension = extension.replace('drive', '')
+            for url in list_fileurls:
+                if 'drive.google.com' in url:
                     list_fileurls_withextension.append(url)
+        # if there are other extensions
+        if extension != "":
+            if extension[-1] == ',':
+                extension = extension[0:-1]
+            elif extension[0] == ',':
+                extension = extension[1:]
+            # only urls with files with certain extensions
+            list_extensions = re.findall(p, extension)
+            for url in list_fileurls:
+                for ext in list_extensions:
+                    if re.search(ext,  url.lower()):
+                        list_fileurls_withextension.append(url)
 
     print("\nFound %s requested items out of %s tags %s" % (len(list_fileurls_withextension),
                                      len(list_fileurls), base_url))
 
+    # exit(0)
     return list_fileurls_withextension
 
 
