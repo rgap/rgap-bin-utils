@@ -61,7 +61,7 @@ def download_from_gdrive(url, filename=None, download_again=False):
         parsed = urlparse(url)
         file_id = parse_qs(parsed.query)['id'][0]
     uc_url = 'https://drive.google.com/uc?id=' + file_id
-    print('Downloading', uc_url)
+    # print('Downloading', uc_url)
     gdown.download(uc_url, None, quiet=False) 
     
 
@@ -90,7 +90,13 @@ def download_file(url, filename=None, download_again=False):
         print("urllib failed")
         try:
             print("with wget")
-            os.system('wget -O "{0}" "{1}"'.format(filename, url))
+            # Quick solution for stopping this command https://stackoverflow.com/questions/43380562/python-script-cant-be-terminated-through-ctrlc-or-ctrlbreak
+                # for i in range(0,360, step):
+            os.system('wget --tries=5 -O "{0}" "{1}"'.format(filename, url))
+                # time.sleep(0.2)
+        # except KeyboardInterrupt:
+        #     print("Stop me!")
+        #     sys.exit(0)
         # handle errors
         except (HTTPError, e):
             print('HTTP Error:', e.code, url)
@@ -142,10 +148,12 @@ def get_files_urls(base_url, tree, tag_name, attr_name, extension):
             elif extension[0] == ',':
                 extension = extension[1:]
             # only urls with files with certain extensions
-            list_extensions = re.findall(p, extension)
+            list_extensions = re.findall(p, extension.lower())
             for url in list_fileurls:
                 for ext in list_extensions:
-                    if re.search(ext,  url.lower()):
+                    ext = '.' + ext
+                    # print('Find ' + ext + ' in ' + url.lower())
+                    if ext in  url.lower():
                         list_fileurls_withextension.append(url)
 
     print("\nFound %s requested items out of %s tags %s" % (len(list_fileurls_withextension),
