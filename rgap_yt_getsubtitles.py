@@ -54,15 +54,11 @@ def subtitle_downloader(url, lang):
         'outtmpl': subtitle_tmpl,  # DEFAULT_OUTTMPL = '%(title)s-%(id)s.%(ext)s'
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        # info = ydl.extract_info(url)
-        # file = ydl.prepare_filename(info)
-        # print(info)
-        # filename, file_extension = os.path.splitext(file)
-        par = parse_qs(urlparse(url).query)
-        filename = par['v'][0]
-        ydl.download([url])  # the id should be exactly 11 characters
+        info_dict = ydl.extract_info(url, download=True)
+        video_title = info_dict.get('title', None)
+        filename = video_title
 
-    return "{}".format(filename)
+    return "{}.{}.vtt".format(filename, lang)
 
 
 def clean_subs(file_name, header):
