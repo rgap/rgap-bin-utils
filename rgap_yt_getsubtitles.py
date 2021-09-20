@@ -14,6 +14,7 @@ Arguments:
 
 import youtube_dl
 import os
+import re
 from urllib.parse import urlparse, parse_qs
 
 
@@ -41,7 +42,7 @@ def my_hook(d):
 
 
 def subtitle_downloader(url, lang):
-    subtitle_tmpl = '%(title)s.%(ext)s'
+    subtitle_tmpl = '%(title)s_%(id)s.%(ext)s' # '%(title)s.%(ext)s'
     ydl_opts = {
         'logger': MyLogger(),
         'progress_hooks': [my_hook],  # only works when downloading videos
@@ -56,9 +57,12 @@ def subtitle_downloader(url, lang):
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=True)
         video_title = info_dict.get('title', None)
-        filename = video_title
-
-    return "{}.{}.vtt".format(filename, lang)
+        video_id = info_dict.get('id', None)
+        print('video_title:', video_title)
+        filename = re.sub(r'[\s]*[:]+[\s]*', ' - ', video_title)
+        filename = re.sub(r'["]+', "'", filename)
+        print('processed:', filename)
+    return "{}_{}.{}.vtt".format(filename, video_id, lang)
 
 
 def clean_subs(file_name, header):
