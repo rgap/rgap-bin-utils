@@ -16,6 +16,8 @@ Arguments:
 
 import re
 import os
+from collections import OrderedDict
+
 
 
 def is_time_stamp(l):
@@ -76,12 +78,14 @@ def clean_up(lines):
         line = cleanhtml(line)
         if has_no_text(line):
             continue
-        elif len(new_lines) and is_lowercase_letter_or_comma(line[0]):
-            # combine with previous line
-            new_lines[-1] = new_lines[-1].strip() + ' ' + line
+        # elif len(new_lines) and is_lowercase_letter_or_comma(line[0]):
+        #     # combine with previous line
+        #     line = new_lines[-1].strip() + ' ' + line
         else:
             # append line
             new_lines.append(line)
+
+    new_lines = list(OrderedDict.fromkeys(new_lines))
     return new_lines
 
 
