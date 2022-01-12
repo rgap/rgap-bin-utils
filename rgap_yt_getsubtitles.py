@@ -60,6 +60,7 @@ def subtitle_downloader(url, lang):
         video_id = info_dict.get('id', None)
         print('video_title:', video_title)
         filename = re.sub(r'[\s]*[:]+[\s]*', ' - ', video_title)
+        filename = re.sub(r'[\s]*[\|]+[\s]*', ' _ ', filename)
         filename = re.sub(r'["]+', "'", filename)
         print('processed:', filename)
     return "{}_{}.{}.vtt".format(filename, video_id, lang)
