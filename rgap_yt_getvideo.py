@@ -48,9 +48,12 @@ def video_downloader(url, quality):
     if quality == 'best':
         # Download best mp4 format available or any other best if no mp4 available
         q = 'bestvideo+bestaudio[ext=m4a]/best/best'
-    else:
+    elif quality == 'medium':
         # Download best format available but no better than 480p
         q = 'bestvideo[height<=480]+bestaudio/best[height<=480]'
+    elif quality == 'low':
+        q = 'bestvideo[height<=240]+bestaudio/best[height<=240]'
+
     ydl_opts = {
     'format': q,
     'postprocessors': [{
