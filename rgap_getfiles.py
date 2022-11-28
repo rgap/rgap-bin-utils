@@ -23,19 +23,23 @@ Arguments:
     download_again        download even if the file exists
 
 Examples:
-    rgap_getfiles.py img src jpg,png,gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait --selenium_download
-    rgap_getfiles.py img src jpg,png,gif https://rolloid.net/25-cosas-increibles-que-no-sabias-que-existian/
+    rgap_getfiles.py img src .jpg,.png,.gif https://www.buzzfeed.com/elainawahl/fotos-de-animales-que-capturan-perfectamente-tu-37b0u '//*[@id="mod-buzz-1"]/article' --selenium --sel_wait --selenium_download
+    rgap_getfiles.py img src .jpg,.png,.gif https://rolloid.net/25-cosas-increibles-que-no-sabias-que-existian/
     rgap_getfiles.py a href "" https://easychair.org/conferences/submissions?a=21984264 '//tr/td[@class="center"][2]/a' --selenium --selenium_download
-    rgap_getfiles.py a href pdf 'https://web.stanford.edu/group/sisl/k12/optimization' --selenium --sel_wait --download_again
+    rgap_getfiles.py a href .pdf 'https://web.stanford.edu/group/sisl/k12/optimization' --selenium --sel_wait --download_again
+    rgap_getfiles.py a href .pdf,.doc,.dvi,.ppt,.pptx,.R,.py,.m,.mdl,.ipynb,.m,.zip,.csv,/pdf,/present https://laurentlessard.com/teaching/204-data-science-engineering/ --selenium --sel_wait --download_again
 
 """
 
 import pyperclip
 from lxml import html
+from bs4 import BeautifulSoup
+import requests
 from selenium import webdriver
 from urllib.request import Request, urlopen
 from urllib.parse import urlparse, urljoin, parse_qs
 from urllib.error import HTTPError, URLError
+from w3lib import url as w3_url
 import pickle
 import time
 import operator
@@ -44,12 +48,41 @@ import gdown
 import re
 import os
 
+import unicodedata
+
+def slugify(value, allow_unicode=False):
+    """
+    To get a valid filename
+    Taken from https://github.com/django/django/blob/master/django/utils/text.py
+    Convert to ASCII if 'allow_unicode' is False. Convert spaces or repeated
+    dashes to single dashes. Remove characters that aren't alphanumerics,
+    underscores, or hyphens. Convert to lowercase. Also strip leading and
+    trailing whitespace, dashes, and underscores.
+    """
+    value = str(value)
+    if allow_unicode:
+        value = unicodedata.normalize('NFKC', value)
+    else:
+        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+    value = re.sub(r'[^\w\s-]', '', value.lower())
+    return re.sub(r'[-\s]+', '-', value).strip('-_')
+
 
 def download(url, filename=None, download_again=False):
     if 'drive.google.com' in url:
         download_from_gdrive(url, filename=filename, download_again=download_again)
+    elif 'docs.google.com' in url and '/presentation' in url:
+        download_from_gdocs(url, filename=filename, download_again=download_again)
+    elif 'github.com' in url:
+        download_from_github(url, filename=filename, download_again=download_again)
     else:
         download_file(url, filename=filename, download_again=download_again)
+
+def download_from_github(url, filename=None, download_again=False):
+
+    uc_url = url.replace("blob", "raw")    
+    # print('Downloading', uc_url)
+    download_file(uc_url, filename=filename, download_again=download_again)
 
 def download_from_gdrive(url, filename=None, download_again=False):
 
@@ -63,6 +96,28 @@ def download_from_gdrive(url, filename=None, download_again=False):
     uc_url = 'https://drive.google.com/uc?id=' + file_id
     # print('Downloading', uc_url)
     gdown.download(uc_url, None, quiet=False) 
+
+def download_from_gdocs(url, filename=None, download_again=False):
+
+    url = w3_url.url_query_cleaner(url)
+    url_direct_download = None
+    if '/export/pdf' in url:
+        uc_url = '/present'.join(url.rsplit('/export/pdf', 1))
+        url_direct_download = url
+    else:
+        uc_url = url 
+        url_direct_download = '/export/pdf'.join(url.rsplit('/present', 1))
+    # print('uc_url', uc_url)
+    # print('url_direct_download', url_direct_download)
+
+    page = requests.get(uc_url)
+    soup = BeautifulSoup(page.text, 'lxml')
+    title = soup.find("meta", property="og:title")
+    # print('title', title)
+    filename = slugify(title["content"]) + '.pdf'
+    print('download_from_gdocs - filename', filename)
+
+    download_file(url_direct_download, filename=filename, download_again=download_again)
     
 
 def download_file(url, filename=None, download_again=False):
@@ -151,7 +206,7 @@ def get_files_urls(base_url, tree, tag_name, attr_name, extension):
             list_extensions = re.findall(p, extension.lower())
             for url in list_fileurls:
                 for ext in list_extensions:
-                    ext = '.' + ext
+                    # ext = '.' + ext
                     # print('Find ' + ext + ' in ' + url.lower())
                     if ext in  url.lower():
                         list_fileurls_withextension.append(url)
