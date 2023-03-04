@@ -105,11 +105,11 @@ def main(args):
     # print(words)
     for word in words:
         token = clean_text(word, trace=False)
-        if token is '':
+        if token == '':
             emoji = ''
         else:
             emoji = get_emoji(token)
-        if emoji is '':
+        if emoji == '':
             processed.append(word)
         else:
             processed.append(word)
