@@ -15,14 +15,14 @@ Arguments:
 """
 
 import os
+
 from PIL import Image
 
 
 def main(args):
-
-    input_file = args['<input>']
-    output_file = args['<output>']
-    color = args['<color>']
+    input_file = args["<input>"]
+    output_file = args["<output>"]
+    color = args["<color>"]
 
     # Load image
     img = Image.open(input_file)
@@ -31,16 +31,18 @@ def main(args):
         output_file = input_file
         input_name, input_extension = os.path.splitext(input_file)
         name_suffix = "_blank" + input_extension
-        output_file = (input_name + name_suffix)
+        output_file = input_name + name_suffix
 
     if not color:
-        color = 'white'
-    img = Image.new('RGB', (img.width, img.height), color=color)
+        color = "white"
+    img = Image.new("RGB", (img.width, img.height), color=color)
 
     # Save it back to disk
     img.save(output_file)
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

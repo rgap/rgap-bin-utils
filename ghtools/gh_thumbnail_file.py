@@ -18,16 +18,16 @@ Options:
     --nosuffix    to not add a suffix "_o.png"
 """
 
-from PIL import Image, ImageFilter
 import math
-import sys
 import os
+import sys
 
+from PIL import Image, ImageFilter
 
 # img = Image.open("bg/background.png")
 
-def gh_resize(input_file, w=None, h=None):
 
+def gh_resize(input_file, w=None, h=None):
     # Load image
     img = Image.open(input_file).convert("RGBA")
 
@@ -47,11 +47,11 @@ def gh_resize(input_file, w=None, h=None):
 
 
 def main(args):
-    input_file = args['<input>']
-    output_file = args['<output>']
-    w = args['<width>']
-    h = args['<height>']
-    nosuffix = args['--nosuffix']
+    input_file = args["<input>"]
+    output_file = args["<output>"]
+    w = args["<width>"]
+    h = args["<height>"]
+    nosuffix = args["--nosuffix"]
 
     if not output_file:
         output_file = input_file
@@ -59,14 +59,17 @@ def main(args):
         # Add suffix if necessary
         if not nosuffix:
             name_suffix = "_o" + input_extension
-            output_file = (input_name + name_suffix)
+            output_file = input_name + name_suffix
 
     resized = gh_resize(input_file, h=h)
 
-    transp_img = Image.new('RGBA', (int(w), int(h)), (0, 0, 0, 0))
+    transp_img = Image.new("RGBA", (int(w), int(h)), (0, 0, 0, 0))
 
     output = transp_img.copy()
-    position = (math.floor((transp_img.width - resized.width)/2), math.floor((transp_img.height - resized.height)/2))
+    position = (
+        math.floor((transp_img.width - resized.width) / 2),
+        math.floor((transp_img.height - resized.height) / 2),
+    )
     output.paste(resized, position)
 
     # output = Image.alpha_composite(transp_img, resized)
@@ -76,4 +79,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

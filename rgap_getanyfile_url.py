@@ -13,13 +13,14 @@ Arguments:
 
 """
 
+import os
+import urllib.request
+from urllib.error import HTTPError, URLError
+from urllib.parse import urljoin, urlparse
+from urllib.request import urlopen, urlretrieve
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from urllib.request import urlretrieve, urlopen
-from urllib.parse import urlparse, urljoin
-from urllib.error import HTTPError, URLError
-import urllib.request
-import os
 
 
 def download(url, filename=None):
@@ -32,8 +33,8 @@ def download(url, filename=None):
     if os.path.isfile(filename):
         print("Already exists", filename)
         return 0
-    print('filename: ', filename)
-    print('Downloading:', url)
+    print("filename: ", filename)
+    print("Downloading:", url)
     # Open the url
     try:
         print("with urllib")
@@ -44,9 +45,9 @@ def download(url, filename=None):
             os.system("wget -O {0} {1}".format(filename, url))
         # handle errors
         except (HTTPError, e):
-            print('HTTP Error:', e.code, url)
+            print("HTTP Error:", e.code, url)
         except (URLError, e):
-            print('URL Error:', e.reason, url)
+            print("URL Error:", e.reason, url)
 
         # Open our local file for writing
         # with open(filename, 'wb') as local_file:
@@ -54,17 +55,16 @@ def download(url, filename=None):
 
 
 def main(args):
-
-    base_url = args['<base_url>']
-    name = args['<name>']
-    short = args['--short']
-    prefix = args['--prefix']
+    base_url = args["<base_url>"]
+    name = args["<name>"]
+    short = args["--short"]
+    prefix = args["--prefix"]
 
     if short:
-        partition = name.split(' ')
-        name = partition[0] + '_' + partition[1]
+        partition = name.split(" ")
+        name = partition[0] + "_" + partition[1]
 
-    print(urlopen(base_url).getheader('Content-Type'))
+    print(urlopen(base_url).getheader("Content-Type"))
     try:
         if prefix is not None:
             name = "{}_{}".format(prefix, name)
@@ -72,7 +72,9 @@ def main(args):
     except:
         print("Error downloading:", base_url)
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

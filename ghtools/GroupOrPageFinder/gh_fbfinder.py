@@ -21,29 +21,30 @@ Examples:
 
 """
 
-from slugify import slugify
-from selenium import webdriver
-from urllib.parse import urlparse, urlunparse
-from w3lib.url import url_query_cleaner
-import urllib.request
-import pickle
-from lxml import html
-import time
 import csv
 import os
+import pickle
 import re
+import time
+import urllib.request
+from urllib.parse import urlparse, urlunparse
+
 import numpy as np
+from lxml import html
+from selenium import webdriver
+from slugify import slugify
+from w3lib.url import url_query_cleaner
 
 
 def csv_writer(data, attributes, path, reopen, trimtext, columns):
     """
     Write data to a CSV file path
     """
-    reopen = 'a' if reopen else 'w'
-    filexists = os.path.isfile(os.getcwd() + '/' + path)
+    reopen = "a" if reopen else "w"
+    filexists = os.path.isfile(os.getcwd() + "/" + path)
 
     with open(path, reopen) as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
+        writer = csv.writer(csv_file, delimiter=",")
         if reopen == "w":
             writer.writerow(attributes)
         if columns:
@@ -51,27 +52,26 @@ def csv_writer(data, attributes, path, reopen, trimtext, columns):
         else:
             for line in data:
                 if trimtext:
-                    line = line.replace('\n', ' ')[:50]
+                    line = line.replace("\n", " ")[:50]
                     line = slugify(line)
                 writer.writerow(line)
 
 
 def full_url(base_url, href):
-
     full_url = href
     netloc = urlparse(full_url).netloc
-    if netloc == '':
-        domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(base_url))
+    if netloc == "":
+        domain = "{uri.scheme}://{uri.netloc}".format(uri=urlparse(base_url))
         full_url = domain + href
     return full_url
 
-def scroll_bottom(driver):
 
+def scroll_bottom(driver):
     SCROLL_PAUSE_TIME = 4
     while True:
         # Get scroll height
         ### This is the difference. Moving this *inside* the loop
-        ### means that it checks if scrollTo is still scrolling 
+        ### means that it checks if scrollTo is still scrolling
         last_height = driver.execute_script("return document.body.scrollHeight")
         # Scroll down to bottom
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -96,16 +96,21 @@ def scroll_bottom(driver):
                 last_height = new_height
                 continue
 
+
 def add_url_columns(data, browser, page_finder, base_url):
     # selenium clicks
     fb_groupurls = []
     fb_groupids = []
     # fb_groupmembers = []
     if page_finder:
-        clickables = browser.find_elements_by_xpath("//div[@data-module-result-type='page']/div")
+        clickables = browser.find_elements_by_xpath(
+            "//div[@data-module-result-type='page']/div"
+        )
     else:
-        clickables = browser.find_elements_by_xpath("//div[@data-module-result-type='group']/div")
-    print('#Groups:', len(clickables))
+        clickables = browser.find_elements_by_xpath(
+            "//div[@data-module-result-type='group']/div"
+        )
+    print("#Groups:", len(clickables))
     for i in range(0, len(clickables)):
         clickables[i].click()
         time.sleep(1)
@@ -133,68 +138,80 @@ def add_url_columns(data, browser, page_finder, base_url):
         scroll_bottom(browser)
 
         if page_finder:
-            clickables = browser.find_elements_by_xpath("//div[@data-module-result-type='page']/div")
+            clickables = browser.find_elements_by_xpath(
+                "//div[@data-module-result-type='page']/div"
+            )
         else:
-            clickables = browser.find_elements_by_xpath("//div[@data-module-result-type='group']/div")
+            clickables = browser.find_elements_by_xpath(
+                "//div[@data-module-result-type='group']/div"
+            )
     # return np.hstack((np.array(fb_groupurls).reshape(-1,1), np.array(fb_groupids).reshape(-1,1), np.array(fb_groupmembers).reshape(-1,1), np.array(data)))
-    return np.hstack((np.array(fb_groupurls).reshape(-1,1), np.array(fb_groupids).reshape(-1,1), np.array(data)))
+    return np.hstack(
+        (
+            np.array(fb_groupurls).reshape(-1, 1),
+            np.array(fb_groupids).reshape(-1, 1),
+            np.array(data),
+        )
+    )
+
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in range(0, len(l), n):
-        yield l[i:i + n]
+        yield l[i : i + n]
 
 
 def convert_to_number(x):
-    x = x.decode('utf-8')
-    x = x.split(' ')
+    x = x.decode("utf-8")
+    x = x.split(" ")
     total_stars = 0
-   
-    if 'K' in x:
+
+    if "K" in x:
         if len(x) > 1:
-            total_stars = float(x.split('K', 1)[0]) * 1000 # convert K to a thousand
-    elif 'M' in x:
+            total_stars = float(x.split("K", 1)[0]) * 1000  # convert K to a thousand
+    elif "M" in x:
         if len(x) > 1:
-            total_stars = float(x.split('M', 1)[0]) * 1000000 # convert M to a million
-    elif 'B' in x:
-        total_stars = float(x.split('B', 1)[0]) * 1000000000 # convert B to a Billion
+            total_stars = float(x.split("M", 1)[0]) * 1000000  # convert M to a million
+    elif "B" in x:
+        total_stars = float(x.split("B", 1)[0]) * 1000000000  # convert B to a Billion
     elif x.isdigit():
-        total_stars = int(x) # Less than 1000
+        total_stars = int(x)  # Less than 1000
     else:
         print(x)
         input()
-        
+
     return int(total_stars)
 
 
 def main(args):
-
-    query = args['<query>']
-    attributes = args['--attr']
-    reopen = args['--r']
-    trimtext = args['--trimtext']
-    url_column = args['--url_column']
-    page_finder = args['--page_finder']
+    query = args["<query>"]
+    attributes = args["--attr"]
+    reopen = args["--r"]
+    trimtext = args["--trimtext"]
+    url_column = args["--url_column"]
+    page_finder = args["--page_finder"]
 
     ## THESE XPATHS MAY HAVE TO CHANGE SOME TIME
     if page_finder:
-        base_url = 'https://m.facebook.com/search/pages/?q=%22{}%22'.format(query)
+        base_url = "https://m.facebook.com/search/pages/?q=%22{}%22".format(query)
         xpath = "//div[@data-module-result-type='page']/div/div/div/div/div/div/div"
         csv_output = "{}_{}.csv".format("p", query)
     else:
-        base_url = 'https://m.facebook.com/search/groups/?q=%22{}%22'.format(query)
+        base_url = "https://m.facebook.com/search/groups/?q=%22{}%22".format(query)
         xpath = "//div[@data-module-result-type='group']/div/div/div/div/div/div/div"
         csv_output = "{}_{}.csv".format("g", query)
 
     nchildnodes = 3
 
     if attributes is not None:
-        attributes = attributes.split(',')
+        attributes = attributes.split(",")
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("user-data-dir=selenium_session")  # Save session
     chrome_options.add_argument("--lang=en")
-    browser = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
+    browser = webdriver.Chrome(
+        "/usr/local/bin/chromedriver", chrome_options=chrome_options
+    )
     browser.get(base_url)
     time.sleep(1)
 
@@ -207,7 +224,7 @@ def main(args):
 
     data = []
     elements = tree.xpath(xpath)
-    print("#elements:",len(elements))
+    print("#elements:", len(elements))
 
     for e in elements:
         if nchildnodes is not None:
@@ -218,15 +235,26 @@ def main(args):
             # Description node
             description_node = e.getchildren()
             ##
-            if len(title_and_numbers) + 1 >= nchildnodes and "member" in title_and_numbers[1].text_content() or "like" in title_and_numbers[1].text_content():
+            if (
+                len(title_and_numbers) + 1 >= nchildnodes
+                and "member" in title_and_numbers[1].text_content()
+                or "like" in title_and_numbers[1].text_content()
+            ):
                 # Title
                 node_list.append(title_and_numbers[0].text_content())
                 # print(node_list)
                 # Likes and Page Type
                 if page_finder:
-                    likes_type = title_and_numbers[1].text_content().lower().split(' like this · ')
+                    likes_type = (
+                        title_and_numbers[1]
+                        .text_content()
+                        .lower()
+                        .split(" like this · ")
+                    )
                 else:
-                    likes_type = title_and_numbers[1].text_content().lower().split(' members · ')
+                    likes_type = (
+                        title_and_numbers[1].text_content().lower().split(" members · ")
+                    )
 
                 # print(likes_type)
                 node_list.append(convert_to_number(likes_type[0]))
@@ -238,10 +266,10 @@ def main(args):
                 if len(description_node) > 1:
                     node_list.append(description_node[1].text_content())
                 else:
-                    node_list.append('')
-                
+                    node_list.append("")
+
             else:
-                node_list = ['' for i in range(nchildnodes + 1)]
+                node_list = ["" for i in range(nchildnodes + 1)]
                 node_list[0] = title_and_numbers[0].text_content()
             # print(node_list)
             data.append(node_list)
@@ -252,8 +280,8 @@ def main(args):
             attr_list = []
             attr_list.append(e.text_content())
             for attr in attributes:
-                if attr == 'href':
-                    attr_list.append(full_url(base_url, e.attrib['href']))
+                if attr == "href":
+                    attr_list.append(full_url(base_url, e.attrib["href"]))
                 else:
                     attr_list.append(e.get(attr))
             data.append(attr_list)
@@ -266,23 +294,25 @@ def main(args):
     if csv_output is None:
         for d in data:
             if isinstance(d, list):
-                print(', '.join(d))
+                print(", ".join(d))
             else:
                 print(d)
     else:
         if nchildnodes:
             headers = []
             if url_column:
-                headers = headers + ['url','id']
-            headers = headers + ['t'+str(i) for i in range(nchildnodes+1)]
+                headers = headers + ["url", "id"]
+            headers = headers + ["t" + str(i) for i in range(nchildnodes + 1)]
             csv_writer(data, headers, csv_output, reopen, trimtext, True)
         else:
-            headers = ['text'] + attributes if attributes is not None else ['text']
+            headers = ["text"] + attributes if attributes is not None else ["text"]
             csv_writer(data, headers, csv_output, reopen, trimtext, False)
 
     browser.close()
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

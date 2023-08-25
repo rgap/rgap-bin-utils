@@ -18,19 +18,21 @@ import os
 
 
 def main(args):
-    input_file = args['<input_file>']
-    citations_file = args['<citations_file>']
+    input_file = args["<input_file>"]
+    citations_file = args["<citations_file>"]
 
-    file_content = ("((*- extends \'article.tplx\' -*))\n\n") + \
-        ("((* block author *))\n") + \
-        ("\\author{Rel Guzman}\n") + \
-        ("((* endblock author *))\n\n") + \
-        ("((* block bibliography *))\n") + \
-        ("\\bibliographystyle{plain}\n") + \
-        ("\\bibliography{{{}}}\n").format(os.path.splitext(citations_file)[0]) + \
-        ("((* endblock bibliography *))\n")
+    file_content = (
+        ("((*- extends 'article.tplx' -*))\n\n")
+        + ("((* block author *))\n")
+        + ("\\author{Rel Guzman}\n")
+        + ("((* endblock author *))\n\n")
+        + ("((* block bibliography *))\n")
+        + ("\\bibliographystyle{plain}\n")
+        + ("\\bibliography{{{}}}\n").format(os.path.splitext(citations_file)[0])
+        + ("((* endblock bibliography *))\n")
+    )
 
-    f = open('citations.tplx', 'w')
+    f = open("citations.tplx", "w")
     f.write(file_content)
     f.close()
 
@@ -39,14 +41,20 @@ def main(args):
     if not citations_file:
         os.system("jupyter nbconvert " + input_file_name + " --to latex")
     else:
-        os.system("jupyter nbconvert " + input_file_name + " --to latex --template citations.tplx")
+        os.system(
+            "jupyter nbconvert "
+            + input_file_name
+            + " --to latex --template citations.tplx"
+        )
 
     os.system("latex -interaction nonstopmode " + input_file_name + ".tex")
     os.system("bibtex " + input_file_name + ".aux")
     os.system("pdflatex " + input_file_name + ".tex")
     os.system("pdflatex " + input_file_name + ".tex")
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

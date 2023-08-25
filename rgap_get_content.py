@@ -24,27 +24,28 @@ Examples:
 
 """
 
-from slugify import slugify
-from selenium import webdriver
-from urllib.parse import urlparse, urlunparse
-from w3lib.url import url_query_cleaner
-import urllib.request
-import pickle
-from lxml import html
-import time
 import csv
 import os
+import pickle
+import time
+import urllib.request
+from urllib.parse import urlparse, urlunparse
+
+from lxml import html
+from selenium import webdriver
+from slugify import slugify
+from w3lib.url import url_query_cleaner
 
 
 def csv_writer(data, attributes, path, reopen, trimtext, columns):
     """
     Write data to a CSV file path
     """
-    reopen = 'a' if reopen else 'w'
-    filexists = os.path.isfile(os.getcwd() + '/' + path)
+    reopen = "a" if reopen else "w"
+    filexists = os.path.isfile(os.getcwd() + "/" + path)
 
     with open(path, reopen) as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
+        writer = csv.writer(csv_file, delimiter=",")
         if reopen == "w":
             writer.writerow(attributes)
         if columns:
@@ -52,27 +53,26 @@ def csv_writer(data, attributes, path, reopen, trimtext, columns):
         else:
             for line in data:
                 if trimtext:
-                    line = line.replace('\n', ' ')[:50]
+                    line = line.replace("\n", " ")[:50]
                     line = slugify(line)
                 writer.writerow(line)
 
 
 def full_url(base_url, href):
-
     full_url = href
     netloc = urlparse(full_url).netloc
-    if netloc == '':
-        domain = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(base_url))
+    if netloc == "":
+        domain = "{uri.scheme}://{uri.netloc}".format(uri=urlparse(base_url))
         full_url = domain + href
     return full_url
 
-def scroll_bottom(driver):
 
+def scroll_bottom(driver):
     SCROLL_PAUSE_TIME = 4
     while True:
         # Get scroll height
         ### This is the difference. Moving this *inside* the loop
-        ### means that it checks if scrollTo is still scrolling 
+        ### means that it checks if scrollTo is still scrolling
         last_height = driver.execute_script("return document.body.scrollHeight")
         # Scroll down to bottom
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -97,30 +97,30 @@ def scroll_bottom(driver):
                 last_height = new_height
                 continue
 
+
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in range(0, len(l), n):
-        yield l[i:i + n]
+        yield l[i : i + n]
 
 
 def main(args):
+    base_url = args["<base_url>"]
+    xpaths = args["<xpaths>"]
+    csv_output = args["--csv"]
+    attributes = args["--attr"]
+    reopen = args["--r"]
+    lib_selenium = args["--lib_selenium"]
+    trimtext = args["--trimtext"]
+    xpathcols = args["--xpathcols"]
+    nchildnodes = int(args["--nchildnodes"])
+    scrollbottom = args["--scrollbottom"]
 
-    base_url = args['<base_url>']
-    xpaths = args['<xpaths>']
-    csv_output = args['--csv']
-    attributes = args['--attr']
-    reopen = args['--r']
-    lib_selenium = args['--lib_selenium']
-    trimtext = args['--trimtext']
-    xpathcols = args['--xpathcols']
-    nchildnodes = int(args['--nchildnodes'])
-    scrollbottom = args['--scrollbottom']
+    cookies = args["--cookies"]
 
-    cookies = args['--cookies']
-
-    xpaths = xpaths.split(',')
+    xpaths = xpaths.split(",")
     if attributes is not None:
-        attributes = attributes.split(',')
+        attributes = attributes.split(",")
 
     if not lib_selenium:
         html_source = urllib.request.urlopen(base_url).read()
@@ -128,7 +128,9 @@ def main(args):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("user-data-dir=selenium")  # Save session
         chrome_options.add_argument("--lang=en")
-        browser = webdriver.Chrome("/usr/local/bin/chromedriver", chrome_options=chrome_options)
+        browser = webdriver.Chrome(
+            "/usr/local/bin/chromedriver", chrome_options=chrome_options
+        )
         if cookies:
             browser.get(base_url)
             for cookie in pickle.load(open(cookies, "rb")):
@@ -152,7 +154,7 @@ def main(args):
                     for i in range(nchildnodes):
                         node_list.append(children[i].text_content())
                 else:
-                    node_list = ['' for i in range(nchildnodes)]
+                    node_list = ["" for i in range(nchildnodes)]
                     node_list[0] = children[0].text_content()
                 # print(node_list)
                 data.append(node_list)
@@ -160,38 +162,39 @@ def main(args):
                 attr_list = []
                 attr_list.append(e.text_content())
                 for attr in attributes:
-                    if attr == 'href':
-                        attr_list.append(full_url(base_url, e.attrib['href']))
+                    if attr == "href":
+                        attr_list.append(full_url(base_url, e.attrib["href"]))
                     else:
                         attr_list.append(e.get(attr))
                 data.append(attr_list)
             else:
                 data.append(e.text_content())
-        
 
     if csv_output is None:
         for d in data:
             if isinstance(d, list):
-                print(', '.join(d))
+                print(", ".join(d))
             else:
                 print(d)
     else:
         if xpathcols:
             columnsize = len(elements)
             data = zip(*list(chunks(data, columnsize)))
-            headers = ['t'+str(i) for i in range(len(xpaths))]
+            headers = ["t" + str(i) for i in range(len(xpaths))]
             csv_writer(data, headers, csv_output, reopen, trimtext, True)
         elif nchildnodes:
-            headers = ['t'+str(i) for i in range(nchildnodes)]
+            headers = ["t" + str(i) for i in range(nchildnodes)]
             csv_writer(data, headers, csv_output, reopen, trimtext, True)
         else:
-            headers = ['text'] + attributes if attributes is not None else ['text']
+            headers = ["text"] + attributes if attributes is not None else ["text"]
             csv_writer(data, headers, csv_output, reopen, trimtext, False)
 
     if lib_selenium:
         browser.close()
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

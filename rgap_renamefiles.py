@@ -16,10 +16,10 @@ Options:
 import os
 import re
 
-def main(args):
 
-    input_dir = args['<input_dir>']
-    current_directory = args['--c']
+def main(args):
+    input_dir = args["<input_dir>"]
+    current_directory = args["--c"]
 
     # In case the current directory is the one used
     if current_directory:
@@ -34,13 +34,12 @@ def main(args):
         output_filename = input_filename
         input_name, input_extension = os.path.splitext(input_filename)
 
-        output_filename = input_name.strip().lower().replace('_', ' ').replace('-', ' ')
-        output_filename = re.sub(' +', ' ', output_filename)
-        output_filename = output_filename.replace(' ', '-') + input_extension
+        output_filename = input_name.strip().lower().replace("_", " ").replace("-", " ")
+        output_filename = re.sub(" +", " ", output_filename)
+        output_filename = output_filename.replace(" ", "-") + input_extension
 
         extensions = [".jpg", ".png", ".gif", ".tif"]
-        is_an_image = any(input_filename.lower().endswith(e)
-                          for e in extensions)
+        is_an_image = any(input_filename.lower().endswith(e) for e in extensions)
         if is_an_image:
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
@@ -51,4 +50,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

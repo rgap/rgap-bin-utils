@@ -18,10 +18,9 @@ from PIL import Image
 
 
 def main(args):
-
-    input_file = args['<input>']
-    output_file = args['<output>']
-    angle = int(args['<angle>'])
+    input_file = args["<input>"]
+    output_file = args["<output>"]
+    angle = int(args["<angle>"])
 
     # Load image
     img = Image.open(input_file)
@@ -35,7 +34,9 @@ def main(args):
     # Save it back to disk
     img.save(output_file)
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

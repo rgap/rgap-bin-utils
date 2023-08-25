@@ -17,19 +17,19 @@ Arguments:
 
 """
 
-from PIL import Image
 import math
 import os
 
+from PIL import Image
+
 
 def main(args):
-
-    input_dir = args['<input_dir>']
-    output_dir = args['<output_dir>']
-    overlay_file = args['<overlay>']
-    current_directory = args['--c']
-    suffix = args['--suffix']
-    top0 = args['--top0']
+    input_dir = args["<input_dir>"]
+    output_dir = args["<output_dir>"]
+    overlay_file = args["<overlay>"]
+    current_directory = args["--c"]
+    suffix = args["--suffix"]
+    top0 = args["--top0"]
 
     # In case the current directory is the one used
     if current_directory:
@@ -51,11 +51,10 @@ def main(args):
             name_suffix = "_o" + input_extension
             if name_suffix in input_filename:
                 continue
-            output_filename = (input_name + name_suffix)
+            output_filename = input_name + name_suffix
 
         extensions = [".jpg", ".png", ".gif", ".tif"]
-        is_an_image = any(input_filename.lower().endswith(e)
-                          for e in extensions)
+        is_an_image = any(input_filename.lower().endswith(e) for e in extensions)
         if is_an_image:
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
@@ -63,16 +62,16 @@ def main(args):
             # Load image
             img = Image.open(input_file).convert("RGBA")
 
-            width, height = img.size   # Get dimensions
+            width, height = img.size  # Get dimensions
 
             overlay = Image.open(overlay_file).convert("RGBA")
             new_width, new_height = overlay.size
 
-            left = math.floor((width - new_width)/2)
+            left = math.floor((width - new_width) / 2)
             if top0:
                 top = 0
             else:
-                top = math.floor((height - new_height)/2)
+                top = math.floor((height - new_height) / 2)
             right = left + new_width
             bottom = top + new_height
 
@@ -87,4 +86,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

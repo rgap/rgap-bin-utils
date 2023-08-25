@@ -14,16 +14,17 @@ Arguments:
 
 """
 
+import csv
+import datetime
+import json
 import os
 import sys
-import json
-import datetime
-import csv
 import time
+
 try:
-    from urllib.request import urlopen, Request
+    from urllib.request import Request, urlopen
 except ImportError:
-    from urllib2 import urlopen, Request
+    from urllib2 import Request, urlopen
 
 
 def request_until_succeed(url):
@@ -53,13 +54,12 @@ def request_until_succeed(url):
 # Needed to write tricky unicode correctly to csv
 def unicode_decode(text):
     try:
-        return text.encode('utf-8').decode()
+        return text.encode("utf-8").decode()
     except UnicodeDecodeError:
-        return text.encode('utf-8')
+        return text.encode("utf-8")
 
 
 def getFacebookPageFeedUrl(base_url):
-
     # Construct the URL string; see http://stackoverflow.com/a/37239851 for
     # Reactions parameters
     fields = "&fields=picture.type(large),name"
@@ -68,23 +68,21 @@ def getFacebookPageFeedUrl(base_url):
 
 
 def processFacebookPageFeedStatus(status):
-
     # The status is now a Python dictionary, so for top-level items,
     # we can simply call the key.
 
     # Additionally, some items may not always exist,
     # so must check for existence first
 
-    status_id = status['id']
-    status_name = status['name']
-    status_picture = '' if 'picture' not in status else status['picture']['data']['url']
+    status_id = status["id"]
+    status_name = status["name"]
+    status_picture = "" if "picture" not in status else status["picture"]["data"]["url"]
 
     return (status_id, status_name, status_picture)
 
 
 def scrapeFacebookPageFeedStatus(page_id, access_token, output_dir):
-
-    with open(output_dir + '/{}_facebook_statuses.csv'.format(page_id), 'w') as file:
+    with open(output_dir + "/{}_facebook_statuses.csv".format(page_id), "w") as file:
         w = csv.writer(file)
 
         w.writerow(["status_id", "name", "picture"])
@@ -92,7 +90,7 @@ def scrapeFacebookPageFeedStatus(page_id, access_token, output_dir):
         has_next_page = True
         num_processed = 0
         scrape_starttime = datetime.datetime.now()
-        after = ''
+        after = ""
         base = "https://graph.facebook.com/v2.11"
         node = "/{}/attending".format(page_id)
         parameters = "/?access_token={}".format(access_token)
@@ -101,16 +99,15 @@ def scrapeFacebookPageFeedStatus(page_id, access_token, output_dir):
         print("Scraping {} Facebook Event: {}\n".format(page_id, scrape_starttime))
 
         while has_next_page:
-            after = '' if after is '' else "&after={}".format(after)
+            after = "" if after is "" else "&after={}".format(after)
             base_url = base + node + parameters + after
             # print(base_url)
 
             url = getFacebookPageFeedUrl(base_url)
-            statuses = json.loads(request_until_succeed(url).decode('utf-8'))
+            statuses = json.loads(request_until_succeed(url).decode("utf-8"))
 
             prev_id = None
-            for status in statuses['data']:
-
+            for status in statuses["data"]:
                 status_data = processFacebookPageFeedStatus(status)
                 if prev_id == status_data[0]:  # In case of a duplicate
                     continue
@@ -120,25 +117,31 @@ def scrapeFacebookPageFeedStatus(page_id, access_token, output_dir):
 
                 num_processed += 1
                 if num_processed % 100 == 0:
-                    print("{} Statuses Processed: {}".format
-                          (num_processed, datetime.datetime.now()))
+                    print(
+                        "{} Statuses Processed: {}".format(
+                            num_processed, datetime.datetime.now()
+                        )
+                    )
 
             # if there is no next page, we're done.
-            if 'paging' in statuses:
-                after = statuses['paging']['cursors']['after']
+            if "paging" in statuses:
+                after = statuses["paging"]["cursors"]["after"]
             else:
                 has_next_page = False
 
-        print("\nDone!\npage_id - {} Statuses Processed in {}".format(
-              num_processed, datetime.datetime.now() - scrape_starttime))
+        print(
+            "\nDone!\npage_id - {} Statuses Processed in {}".format(
+                num_processed, datetime.datetime.now() - scrape_starttime
+            )
+        )
 
 
 def main(args):
-    app_id = args['<app_id>']
-    app_secret = args['<app_secret>']
-    event_id = args['<event_id>']
+    app_id = args["<app_id>"]
+    app_secret = args["<app_secret>"]
+    event_id = args["<event_id>"]
 
-    output_dir = args['<output_dir>']
+    output_dir = args["<output_dir>"]
     if not output_dir:
         output_dir = os.getcwd()
     elif not os.path.exists(output_dir):
@@ -151,4 +154,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

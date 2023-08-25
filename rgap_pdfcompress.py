@@ -25,11 +25,10 @@ import os
 
 
 def main(args):
-
-    input_dir = args['<input_dir>']
-    output_dir = args['<output_dir>']
-    current_directory = args['--c']
-    suffix = args['--suffix']
+    input_dir = args["<input_dir>"]
+    output_dir = args["<output_dir>"]
+    current_directory = args["--c"]
+    suffix = args["--suffix"]
 
     # In case the current directory is the one used
     if current_directory:
@@ -51,18 +50,21 @@ def main(args):
             name_suffix = "_compressed.pdf"
             if name_suffix in input_filename:
                 continue
-            output_filename = (os.path.splitext(input_filename)[0] +
-                               name_suffix)
+            output_filename = os.path.splitext(input_filename)[0] + name_suffix
 
         # Check if it's a pdf
         is_a_pdf = input_filename.lower().endswith(".pdf")
         if is_a_pdf:
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
-            tmp_file = os.path.join(input_dir, os.path.splitext(input_filename)[0] + '_#00tmp.pdf')
+            tmp_file = os.path.join(
+                input_dir, os.path.splitext(input_filename)[0] + "_#00tmp.pdf"
+            )
             os.system("cp {} {}".format(input_file, tmp_file))
 
-            command = "gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/screen -dCompatibilityLevel=1.4 -sOutputFile={} {}".format(output_file, tmp_file)
+            command = "gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/screen -dCompatibilityLevel=1.4 -sOutputFile={} {}".format(
+                output_file, tmp_file
+            )
             print(command)
             # Run pdfcrop command
             try:
@@ -75,7 +77,9 @@ def main(args):
         else:
             continue
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

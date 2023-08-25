@@ -12,20 +12,20 @@ Arguments:
 
 """
 
-import mutagen
-from mutagen.id3 import ID3, ID3NoHeaderError
-from mutagen.easyid3 import EasyID3
 import os
+
+import mutagen
+from mutagen.easyid3 import EasyID3
+from mutagen.id3 import ID3, ID3NoHeaderError
 
 
 def main(args):
-
-    input_dir = args['<input_dir>']
-    output_dir = args['<output_dir>']
-    current_directory = args['--c']
-    suffix = args['--suffix']
-    artist = args['<artist>']
-    album = args['<album>']
+    input_dir = args["<input_dir>"]
+    output_dir = args["<output_dir>"]
+    current_directory = args["--c"]
+    suffix = args["--suffix"]
+    artist = args["<artist>"]
+    album = args["<album>"]
 
     # In case the current directory is the one used
     if current_directory:
@@ -38,7 +38,6 @@ def main(args):
         os.makedirs(output_dir)
 
     for input_filename in os.listdir(os.getcwd()):
-
         output_filename = input_filename
 
         input_name, input_extension = os.path.splitext(input_filename)
@@ -50,9 +49,8 @@ def main(args):
                 continue
         output_filename = input_name + name_suffix
 
-        extensions = ['.mp3', '.wav', '.wma', '.m4a', '.ogg']
-        is_audio = any(input_extension.lower() == e
-                       for e in extensions)
+        extensions = [".mp3", ".wav", ".wma", ".m4a", ".ogg"]
+        is_audio = any(input_extension.lower() == e for e in extensions)
         if is_audio:
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
@@ -63,13 +61,14 @@ def main(args):
             except ID3NoHeaderError:
                 audiofile = mutagen.File(input_file, easy=True)
                 audiofile.add_tags()
-            audiofile['artist'] = artist
-            audiofile['album'] = album
-            audiofile['title'] = input_name
+            audiofile["artist"] = artist
+            audiofile["album"] = album
+            audiofile["title"] = input_name
             audiofile.save(output_file)
 
 
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

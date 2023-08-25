@@ -39,12 +39,11 @@ import os
 
 
 def main(args):
-
-    input_dir = args['<input_dir>']
-    output_dir = args['<output_dir>']
-    margins = args['--margins']
-    current_directory = args['--c']
-    suffix = args['--suffix']
+    input_dir = args["<input_dir>"]
+    output_dir = args["<output_dir>"]
+    margins = args["--margins"]
+    current_directory = args["--c"]
+    suffix = args["--suffix"]
 
     # In case the current directory is the one used
     if current_directory:
@@ -66,8 +65,7 @@ def main(args):
             name_suffix = "_cropped.pdf"
             if name_suffix in input_filename:
                 continue
-            output_filename = (os.path.splitext(input_filename)[0] +
-                               name_suffix)
+            output_filename = os.path.splitext(input_filename)[0] + name_suffix
 
         # Check if it's a pdf
         is_a_pdf = input_filename.lower().endswith(".pdf")
@@ -89,7 +87,9 @@ def main(args):
         else:
             continue
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

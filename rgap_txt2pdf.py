@@ -21,11 +21,10 @@ import os
 
 
 def main(args):
-
-    input_dir = args['<input_dir>']
-    output_dir = args['<output_dir>']
-    current_directory = args['--c']
-    suffix = args['--suffix']
+    input_dir = args["<input_dir>"]
+    output_dir = args["<output_dir>"]
+    current_directory = args["--c"]
+    suffix = args["--suffix"]
 
     # In case the current directory is the one used
     if current_directory:
@@ -48,8 +47,7 @@ def main(args):
             name_suffix = "_conv.pdf"
             if name_suffix in input_filename:
                 continue
-        output_filename = (os.path.splitext(input_filename)[0] +
-                           name_suffix)
+        output_filename = os.path.splitext(input_filename)[0] + name_suffix
 
         # Check if it's a txt
         is_image = input_filename.lower().endswith(".txt")
@@ -57,8 +55,9 @@ def main(args):
             input_file = os.path.join(input_dir, input_filename)
             output_file = os.path.join(output_dir, output_filename)
 
-            command = (('pandoc -V geometry:paperwidth=4in -V geometry:paperheight=6in -V geometry:margin=.5in "%s" -o "%s"') %
-                       (input_file, output_file))
+            command = (
+                'pandoc -V geometry:paperwidth=4in -V geometry:paperheight=6in -V geometry:margin=.5in "%s" -o "%s"'
+            ) % (input_file, output_file)
 
             # Run command
             try:
@@ -70,7 +69,9 @@ def main(args):
         else:
             continue
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

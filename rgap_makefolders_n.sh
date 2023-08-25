@@ -1,7 +1,7 @@
 #!/bin/bash
-n="$1";
-max="$2";
-while [ "$n" -le "$max" ]; do
-  mkdir "$n"
-  n=`expr "$n" + 1`;
+n_ini="$1"
+n_end="$2"
+while [ "$n_ini" -le "$n_end" ]; do
+  mkdir "$n_ini"
+  n_ini=$(expr "$n_ini" + 1)
 done

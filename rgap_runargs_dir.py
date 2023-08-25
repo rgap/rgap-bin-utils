@@ -24,19 +24,32 @@ Examples:
 
 import os
 import re
+
 from PIL import Image, ImageChops
 
-def runcommand(script, arguments, input_filename, output_filename, argument_list, index_params, test, obj):
+
+def runcommand(
+    script,
+    arguments,
+    input_filename,
+    output_filename,
+    argument_list,
+    index_params,
+    test,
+    obj,
+):
     # input_file = input_filename  # os.path.join(input_dir, input_filename)
     # output_file = os.path.join(input_dir, output_filename)
 
     arguments_template = arguments.copy()
     for i, _ in enumerate(argument_list):
         for arg in argument_list[i]:
-            arguments_template[index_params[i]] = arguments_template[index_params[i]].replace("<{}>".format(arg), str(eval(arg)))
-    command_arguments = ''
+            arguments_template[index_params[i]] = arguments_template[
+                index_params[i]
+            ].replace("<{}>".format(arg), str(eval(arg)))
+    command_arguments = ""
     for arg in arguments_template:
-        command_arguments += arg + ' '
+        command_arguments += arg + " "
 
     command = (script + " %s") % (command_arguments)
     print(command)
@@ -54,23 +67,23 @@ def runcommand(script, arguments, input_filename, output_filename, argument_list
 
 
 def main(args):
-    script = args['<script>']
-    arguments = args['<arguments>']
-    filetypes = args['--filetypes']
-    prefix = args['--prefix']
-    test = args['--test']
+    script = args["<script>"]
+    arguments = args["<arguments>"]
+    filetypes = args["--filetypes"]
+    prefix = args["--prefix"]
+    test = args["--test"]
 
     if filetypes:
-        extensions = ['.' + ftype for ftype in filetypes.split(',')]
+        extensions = ["." + ftype for ftype in filetypes.split(",")]
 
     # In case the current directory is the one used
     input_dir = os.getcwd()
 
-    arguments = arguments.split(' ')
+    arguments = arguments.split(" ")
     index_params = []
     argument_list = []
     for i in range(len(arguments)):
-        params = re.findall(r'<(.+?)>', arguments[i])
+        params = re.findall(r"<(.+?)>", arguments[i])
         if len(params) is not 0:
             argument_list.append(params)
             index_params.append(i)
@@ -91,21 +104,43 @@ def main(args):
         input_name, input_extension = os.path.splitext(input_filename)
 
         if filetypes:
-            is_the_type = any(input_filename.lower().endswith(e)
-                              for e in extensions)
+            is_the_type = any(input_filename.lower().endswith(e) for e in extensions)
             if is_the_type:
                 # Special case when it's an image
                 obj = None
-                if "jpg" in input_filename or "png" in input_filename or "gif" in input_filename:
+                if (
+                    "jpg" in input_filename
+                    or "png" in input_filename
+                    or "gif" in input_filename
+                ):
                     # Load image
                     obj = Image.open(input_filename)
 
-                runcommand(script, arguments, input_filename, output_filename, argument_list, index_params, test, obj)
+                runcommand(
+                    script,
+                    arguments,
+                    input_filename,
+                    output_filename,
+                    argument_list,
+                    index_params,
+                    test,
+                    obj,
+                )
         else:
-            runcommand(script, arguments, input_filename, output_filename, argument_list, index_params, test, obj)
-                
+            runcommand(
+                script,
+                arguments,
+                input_filename,
+                output_filename,
+                argument_list,
+                index_params,
+                test,
+                obj,
+            )
+
 
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

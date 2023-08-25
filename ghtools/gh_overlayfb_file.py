@@ -17,18 +17,18 @@ Options:
     --top0      to cut the image from the top
 """
 
-from PIL import Image
 import math
 import os
 
+from PIL import Image
+
 
 def main(args):
-
-    input_file = args['<input>']
-    output_file = args['<output>']
-    overlay_file = args['<overlay>']
-    suffix = args['--suffix']
-    top0 = args['--top0']
+    input_file = args["<input>"]
+    output_file = args["<output>"]
+    overlay_file = args["<overlay>"]
+    suffix = args["--suffix"]
+    top0 = args["--top0"]
 
     # Load image
     img = Image.open(input_file).convert("RGBA")
@@ -39,18 +39,18 @@ def main(args):
         # Add suffix if necessary
         if suffix:
             name_suffix = "_o" + input_extension
-            output_file = (input_name + name_suffix)
+            output_file = input_name + name_suffix
 
-    width, height = img.size   # Get dimensions
+    width, height = img.size  # Get dimensions
 
     overlay = Image.open(overlay_file).convert("RGBA")
     new_width, new_height = overlay.size
 
-    left = math.floor((width - new_width)/2)
+    left = math.floor((width - new_width) / 2)
     if top0:
         top = 0
     else:
-        top = math.floor((height - new_height)/2)
+        top = math.floor((height - new_height) / 2)
     right = left + new_width
     bottom = top + new_height
 
@@ -65,4 +65,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

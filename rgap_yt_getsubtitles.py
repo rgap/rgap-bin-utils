@@ -12,14 +12,14 @@ Arguments:
     lang       language; e.g. en, es. It is English by default
 """
 
-import youtube_dl
 import os
 import re
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
+
+import youtube_dl
 
 
 class MyLogger(object):
-
     def debug(self, msg):
         pass
 
@@ -35,54 +35,50 @@ class MyLogger(object):
 
 
 def my_hook(d):
-    if d['status'] == 'finished':
-        print('Done downloading.')
-    if d['status'] == 'error':
-        print('Error')
+    if d["status"] == "finished":
+        print("Done downloading.")
+    if d["status"] == "error":
+        print("Error")
 
 
 def subtitle_downloader(url, lang):
-    subtitle_tmpl = '%(title)s_%(id)s.%(ext)s' # '%(title)s.%(ext)s'
+    subtitle_tmpl = "%(title)s_%(id)s.%(ext)s"  # '%(title)s.%(ext)s'
     ydl_opts = {
-        'logger': MyLogger(),
-        'progress_hooks': [my_hook],  # only works when downloading videos
-        'subtitlesformat': 'vtt',
-        'subtitleslangs': [lang],
-        'skip_download': True,
+        "logger": MyLogger(),
+        "progress_hooks": [my_hook],  # only works when downloading videos
+        "subtitlesformat": "vtt",
+        "subtitleslangs": [lang],
+        "skip_download": True,
         # 'allsubtitles': True,
         # 'writesubtitles': True,
-        'writeautomaticsub': True,
-        'outtmpl': subtitle_tmpl,  # DEFAULT_OUTTMPL = '%(title)s-%(id)s.%(ext)s'
+        "writeautomaticsub": True,
+        "outtmpl": subtitle_tmpl,  # DEFAULT_OUTTMPL = '%(title)s-%(id)s.%(ext)s'
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=True)
-        video_title = info_dict.get('title', None)
-        video_id = info_dict.get('id', None)
-        print('video_title:', video_title)
-        filename = re.sub(r'[\s]*[:]+[\s]*', ' - ', video_title)
-        filename = re.sub(r'[\s]*[\|]+[\s]*', ' _ ', filename)
+        video_title = info_dict.get("title", None)
+        video_id = info_dict.get("id", None)
+        print("video_title:", video_title)
+        filename = re.sub(r"[\s]*[:]+[\s]*", " - ", video_title)
+        filename = re.sub(r"[\s]*[\|]+[\s]*", " _ ", filename)
         filename = re.sub(r'["]+', "'", filename)
-        filename = re.sub(r'[?]+', "", filename)
-        print('processed:', filename)
+        filename = re.sub(r"[?]+", "", filename)
+        print("processed:", filename)
     return "{}_{}.{}.vtt".format(filename, video_id, lang)
 
 
 def clean_subs(file_name, header):
     print("Cleaning")
     file_name.replace('"', "'")
-    cmd = [
-        "rgap_subtitles_clean.py",
-        '"{}"'.format(file_name),
-        "--header=" + header
-    ]
+    cmd = ["rgap_subtitles_clean.py", '"{}"'.format(file_name), "--header=" + header]
     os.system(" ".join(cmd))
 
 
 def main(args):
-    url = args['<url>']
-    lang = args['--lang']
+    url = args["<url>"]
+    lang = args["--lang"]
     if lang is None:
-        lang = 'en'
+        lang = "en"
 
     subtitles_file = subtitle_downloader(url, lang)
     print(subtitles_file)
@@ -92,4 +88,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

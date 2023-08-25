@@ -14,20 +14,19 @@ Arguments:
     header  what to write in the beginning
 """
 
-import re
 import os
+import re
 from collections import OrderedDict
 
 
-
 def is_time_stamp(l):
-    if l[:2].isnumeric() and l[2] == ':':
+    if l[:2].isnumeric() and l[2] == ":":
         return True
     return False
 
 
 def has_letters(line):
-    if re.search('[a-zA-Z]', line):
+    if re.search("[a-zA-Z]", line):
         return True
     return False
 
@@ -50,14 +49,14 @@ def has_no_text(line):
 def is_lowercase_letter_or_comma(letter):
     if letter.isalpha() and letter.lower() == letter:
         return True
-    if letter == ',':
+    if letter == ",":
         return True
     return False
 
 
 def cleanhtml(raw_html):
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, '', raw_html)
+    cleanr = re.compile("<.*?>")
+    cleantext = re.sub(cleanr, "", raw_html)
     return cleantext
 
 
@@ -70,7 +69,7 @@ def clean_up(lines):
     new_lines = []
     for line in lines:
         # start adding lines since the first timestamp
-        if flag and line[:3] == '00:':
+        if flag and line[:3] == "00:":
             flag = False
         if flag:
             continue
@@ -90,25 +89,26 @@ def clean_up(lines):
 
 
 def main(args):
+    input_file = args["<input>"]
+    output_file = args["<output>"]
+    header = args["--header"]
 
-    input_file = args['<input>']
-    output_file = args['<output>']
-    header = args['--header']
-
-    file_encoding = 'utf-8'
-    with open(input_file, encoding=file_encoding, errors='replace') as f:
+    file_encoding = "utf-8"
+    with open(input_file, encoding=file_encoding, errors="replace") as f:
         lines = f.readlines()
         new_lines = clean_up(lines)
     if not output_file:
-        output_file = os.path.splitext(input_file)[0] + '.txt'
-    with open(output_file, 'w') as f:
+        output_file = os.path.splitext(input_file)[0] + ".txt"
+    with open(output_file, "w") as f:
         if header:
-            f.write(header + '\n')
-        f.write(input_file + '\n\n')
+            f.write(header + "\n")
+        f.write(input_file + "\n\n")
         for i, line in enumerate(new_lines):
-            f.write(str(i + 1) + '. ' + line)
+            f.write(str(i + 1) + ". " + line)
+
 
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

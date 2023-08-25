@@ -15,13 +15,13 @@ Examples:
     rgap_yt_getvideo.py https://www.youtube.com/watch?v=J---aiyznGQ --q=best
 """
 
-import youtube_dl
 import os
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
+
+import youtube_dl
 
 
 class MyLogger(object):
-
     def debug(self, msg):
         pass
 
@@ -37,31 +37,32 @@ class MyLogger(object):
 
 
 def my_hook(d):
-    if d['status'] == 'finished':
-        print('Done downloading.')
-    if d['status'] == 'error':
-        print('Error')
+    if d["status"] == "finished":
+        print("Done downloading.")
+    if d["status"] == "error":
+        print("Error")
 
 
 def video_downloader(url, quality):
-
-    if quality == 'best':
+    if quality == "best":
         # Download best mp4 format available or any other best if no mp4 available
-        q = 'bestvideo+bestaudio[ext=m4a]/best/best'
-    elif quality == 'medium':
+        q = "bestvideo+bestaudio[ext=m4a]/best/best"
+    elif quality == "medium":
         # Download best format available but no better than 480p
-        q = 'bestvideo[height<=480]+bestaudio/best[height<=480]'
-    elif quality == 'low':
-        q = 'bestvideo[height<=240]+bestaudio/best[height<=240]'
+        q = "bestvideo[height<=480]+bestaudio/best[height<=480]"
+    elif quality == "low":
+        q = "bestvideo[height<=240]+bestaudio/best[height<=240]"
 
     ydl_opts = {
-    'format': q,
-    'postprocessors': [{
-        'key': 'FFmpegVideoConvertor',
-        'preferedformat': 'mp4',
-    }],
-    'logger': MyLogger(),
-    'progress_hooks': [my_hook],
+        "format": q,
+        "postprocessors": [
+            {
+                "key": "FFmpegVideoConvertor",
+                "preferedformat": "mp4",
+            }
+        ],
+        "logger": MyLogger(),
+        "progress_hooks": [my_hook],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         # info = ydl.extract_info(url)
@@ -69,15 +70,15 @@ def video_downloader(url, quality):
         # print(info)
         # filename, file_extension = os.path.splitext(file)
         par = parse_qs(urlparse(url).query)
-        filename = par['v'][0]
+        filename = par["v"][0]
         ydl.download([url])  # the id should be exactly 11 characters
 
     return "{}".format(filename)
 
 
 def main(args):
-    url = args['<url>']
-    quality = args['--q']
+    url = args["<url>"]
+    quality = args["--q"]
 
     file = video_downloader(url, quality)
     print(file)
@@ -86,4 +87,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

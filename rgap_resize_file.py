@@ -22,16 +22,16 @@ Options:
 """
 
 import os
+
 from PIL import Image
 
 
 def main(args):
-
-    input_file = args['<input>']
-    output_file = args['<output>']
-    w = args['<width>']
-    h = args['<height>']
-    suffix = args['--suffix']
+    input_file = args["<input>"]
+    output_file = args["<output>"]
+    w = args["<width>"]
+    h = args["<height>"]
+    suffix = args["--suffix"]
 
     # Load image
     img = Image.open(input_file)
@@ -42,7 +42,7 @@ def main(args):
         # Add suffix if necessary
         if suffix:
             name_suffix = "_resized" + input_extension
-            output_file = (input_name + name_suffix)
+            output_file = input_name + name_suffix
 
     if w and h:
         h_new = int(h)
@@ -60,7 +60,9 @@ def main(args):
     # Save it back to disk
     img.save(output_file)
 
+
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))

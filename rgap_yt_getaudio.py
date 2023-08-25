@@ -11,13 +11,13 @@ Arguments:
     url        url of the youtube video
 """
 
-import youtube_dl
 import os
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
+
+import youtube_dl
 
 
 class MyLogger(object):
-
     def debug(self, msg):
         pass
 
@@ -33,22 +33,24 @@ class MyLogger(object):
 
 
 def my_hook(d):
-    if d['status'] == 'finished':
-        print('Done downloading.')
-    if d['status'] == 'error':
-        print('Error')
+    if d["status"] == "finished":
+        print("Done downloading.")
+    if d["status"] == "error":
+        print("Error")
 
 
 def audio_downloader(url):
     ydl_opts = {
-    'format': 'bestaudio/best',
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
-    'logger': MyLogger(),
-    'progress_hooks': [my_hook],
+        "format": "bestaudio/best",
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "192",
+            }
+        ],
+        "logger": MyLogger(),
+        "progress_hooks": [my_hook],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         # info = ydl.extract_info(url)
@@ -56,14 +58,14 @@ def audio_downloader(url):
         # print(info)
         # filename, file_extension = os.path.splitext(file)
         par = parse_qs(urlparse(url).query)
-        filename = par['v'][0]
+        filename = par["v"][0]
         ydl.download([url])  # the id should be exactly 11 characters
 
     return "{}".format(filename)
 
 
 def main(args):
-    url = args['<url>']
+    url = args["<url>"]
 
     file = audio_downloader(url)
     print(file)
@@ -72,4 +74,5 @@ def main(args):
 if __name__ == "__main__":
     # This will only be executed when this module is run direcly
     from docopt import docopt
+
     main(docopt(__doc__))
