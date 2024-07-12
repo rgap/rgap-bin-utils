@@ -22,6 +22,7 @@ Examples:
 
     rgap_get_content.py https://m.facebook.com/search/groups/?q="venta" "//div[@data-module-result-type='group']/div/div/div/div/div/div/div/div[@data-nt='FB:TEXT4'][1],//div[@data-module-result-type='group']/div/div/div/div/div/div/div/div[@data-nt='FB:TEXT4'][2]" --lib_selenium --csv=output.csv
 
+    rgap_get_content.py "https://www.mesa247.pe/en/lima/restaurant/bar-italiano-trattoria\?date\=2024-07-12\&hour\=07:45\&pax\=2" --xpathcols "/html/body/div[3]/section[8]/div/div/div[2]/div/div/div/div/p" --csv=output.csv --lib_selenium
 """
 
 import csv
@@ -113,7 +114,10 @@ def main(args):
     lib_selenium = args["--lib_selenium"]
     trimtext = args["--trimtext"]
     xpathcols = args["--xpathcols"]
-    nchildnodes = int(args["--nchildnodes"])
+    nchildnodes = args["--nchildnodes"]
+    if args["--nchildnodes"]:
+        nchildnodes = int(args["--nchildnodes"])
+
     scrollbottom = args["--scrollbottom"]
 
     cookies = args["--cookies"]
@@ -128,9 +132,7 @@ def main(args):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("user-data-dir=selenium")  # Save session
         chrome_options.add_argument("--lang=en")
-        browser = webdriver.Chrome(
-            "/usr/local/bin/chromedriver", chrome_options=chrome_options
-        )
+        browser = webdriver.Chrome(options=chrome_options)  # Changed line
         if cookies:
             browser.get(base_url)
             for cookie in pickle.load(open(cookies, "rb")):
