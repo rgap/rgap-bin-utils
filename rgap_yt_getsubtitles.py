@@ -16,7 +16,7 @@ import os
 import re
 from urllib.parse import parse_qs, urlparse
 
-import youtube_dl
+import yt_dlp as youtube_dl
 
 
 class MyLogger(object):
@@ -60,7 +60,7 @@ def subtitle_downloader(url, lang):
         video_id = info_dict.get("id", None)
         print("video_title:", video_title)
         filename = re.sub(r"[\s]*[:]+[\s]*", " - ", video_title)
-        filename = re.sub(r"[\s]*[\|]+[\s]*", " _ ", filename)
+        filename = re.sub(r"[\s]*[\|]+[\s]*", " | ", filename)
         filename = re.sub(r'["]+', "'", filename)
         filename = re.sub(r"[?]+", "", filename)
         print("processed:", filename)

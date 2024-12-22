@@ -18,7 +18,7 @@ Examples:
 import os
 from urllib.parse import parse_qs, urlparse
 
-import youtube_dl
+import yt_dlp as youtube_dl
 
 
 class MyLogger(object):
@@ -44,7 +44,7 @@ def my_hook(d):
 
 
 def video_downloader(url, quality):
-    if quality == "best":
+    if quality == None or quality == "best":
         # Download best mp4 format available or any other best if no mp4 available
         q = "bestvideo+bestaudio[ext=m4a]/best/best"
     elif quality == "medium":
