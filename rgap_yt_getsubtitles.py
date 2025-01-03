@@ -15,24 +15,18 @@ Arguments:
 import os
 import re
 from urllib.parse import parse_qs, urlparse
-
+import difflib
 import yt_dlp as youtube_dl
-
 
 class MyLogger(object):
     def debug(self, msg):
         pass
 
     def warning(self, msg):
-        # if msg == 'video doesn\'t have subtitles':
-        #     print 'Error: no subtitles'
-        # else:
-        #     print(msg)
         print(msg)
 
     def error(self, msg):
         print(msg)
-
 
 def my_hook(d):
     if d["status"] == "finished":
@@ -40,39 +34,44 @@ def my_hook(d):
     if d["status"] == "error":
         print("Error")
 
-
 def subtitle_downloader(url, lang):
-    subtitle_tmpl = "%(title)s_%(id)s.%(ext)s"  # '%(title)s.%(ext)s'
+    subtitle_tmpl = "%(title)s_%(id)s.%(ext)s"  # Correct template syntax
     ydl_opts = {
         "logger": MyLogger(),
-        "progress_hooks": [my_hook],  # only works when downloading videos
+        "progress_hooks": [my_hook],
         "subtitlesformat": "vtt",
         "subtitleslangs": [lang],
         "skip_download": True,
-        # 'allsubtitles': True,
-        # 'writesubtitles': True,
         "writeautomaticsub": True,
-        "outtmpl": subtitle_tmpl,  # DEFAULT_OUTTMPL = '%(title)s-%(id)s.%(ext)s'
+        "outtmpl": subtitle_tmpl,
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=True)
-        video_title = info_dict.get("title", None)
-        video_id = info_dict.get("id", None)
+        video_title = info_dict.get("title", "Untitled")  # Default to "Untitled" if title is missing
+        video_id = info_dict.get("id", "unknown_id")  # Default to "unknown_id" if ID is missing
         print("video_title:", video_title)
         filename = re.sub(r"[\s]*[:]+[\s]*", " - ", video_title)
-        filename = re.sub(r"[\s]*[\|]+[\s]*", " | ", filename)
+        filename = re.sub(r"[\s]*[\|]+[\s]*", " _ ", filename)
         filename = re.sub(r'["]+', "'", filename)
         filename = re.sub(r"[?]+", "", filename)
         print("processed:", filename)
     return "{}_{}.{}.vtt".format(filename, video_id, lang)
 
+def find_most_similar_filename(target_file):
+    files_in_dir = os.listdir('.')
+    closest_match = difflib.get_close_matches(target_file, files_in_dir, n=1)
+    if closest_match:
+        print(f"File '{target_file}' not found. Using the most similar file: {closest_match[0]}")
+        return closest_match[0]
+    print(f"File '{target_file}' not found and no similar files detected. Proceeding with the original name.")
+    return target_file
 
 def clean_subs(file_name, header):
     print("Cleaning")
-    file_name.replace('"', "'")
-    cmd = ["rgap_subtitles_clean.py", '"{}"'.format(file_name), "--header=" + header]
+    similar_file = find_most_similar_filename(file_name)
+    similar_file = similar_file.replace('"', "'")
+    cmd = ["rgap_subtitles_clean.py", '"{}"'.format(similar_file), "--header=" + header]
     os.system(" ".join(cmd))
-
 
 def main(args):
     url = args["<url>"]
@@ -84,9 +83,7 @@ def main(args):
     print(subtitles_file)
     clean_subs(subtitles_file, url)
 
-
 if __name__ == "__main__":
-    # This will only be executed when this module is run direcly
     from docopt import docopt
 
     main(docopt(__doc__))
