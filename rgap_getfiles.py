@@ -48,6 +48,7 @@ import requests
 from bs4 import BeautifulSoup
 from lxml import html
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from w3lib import url as w3_url
 
 
@@ -297,9 +298,8 @@ def main(args):
             "safebrowsing.disable_download_protection": True,
         }
         chrome_options.add_experimental_option("prefs", prefs)
-        driver = webdriver.Chrome(
-            "/usr/local/bin/chromedriver", chrome_options=chrome_options
-        )
+        service = Service("/usr/local/bin/chromedriver")
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.set_window_size(500, 500)
 
         driver.get(base_url)

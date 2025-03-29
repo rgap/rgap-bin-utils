@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Trim whitespace from images in a directory
+"""Trim whitespace (including white or near-white backgrounds) from images in a directory
 
 Usage:
     rgap_imagecrop.py (--c|<input_dir>) <output_dir> [--suffix]
@@ -13,22 +13,37 @@ Arguments:
     --c         to make input_dir the current directory
 
 Options:
-    --suffix    to add a suffixes "_cropped.pdf"
+    --suffix    to add a suffix "_cropped" to output filenames.
 
 """
 
 import os
-
 from PIL import Image, ImageChops
 
 
-def trim(im):
-    bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
-    diff = ImageChops.difference(im, bg)
-    diff = ImageChops.add(diff, diff, 2.0, 0)
-    bbox = diff.getbbox()
+def trim(im, tolerance=245):
+    """
+    Trims white or near-white backgrounds from the image.
+
+    Args:
+        im (PIL.Image): The input image.
+        tolerance (int): Brightness level to consider as "background" (0-255).
+
+    Returns:
+        PIL.Image or None: Cropped image or None if no content to crop.
+    """
+    # Convert image to grayscale for easier processing
+    grayscale = im.convert("L")
+
+    # Create a binary mask where white areas are treated as "background"
+    binary_mask = grayscale.point(lambda x: 0 if x > tolerance else 255, mode="1")
+
+    # Get the bounding box of the non-background content
+    bbox = binary_mask.getbbox()
+
     if bbox:
         return im.crop(bbox)
+    return None
 
 
 def main(args):
@@ -37,13 +52,13 @@ def main(args):
     current_directory = args["--c"]
     suffix = args["--suffix"]
 
-    # In case the current directory is the one used
+    # Use the current directory if specified
     if current_directory:
         input_dir = os.getcwd()
 
     if not output_dir:
         output_dir = input_dir
-    # If the output directory doesn't exist then create it
+    # Create the output directory if it doesn't exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -61,7 +76,7 @@ def main(args):
             output_filename = input_name + name_suffix
 
         # Check if it's an image
-        extensions = [".jpg", ".png", ".gif"]
+        extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff"]
         is_an_image = any(input_filename.lower().endswith(e) for e in extensions)
         if is_an_image:
             input_file = os.path.join(input_dir, input_filename)
@@ -69,15 +84,18 @@ def main(args):
 
             # Load and trim image
             img = Image.open(input_file)
-            img = trim(img)
+            trimmed_img = trim(img)
 
-            # Save it back to disk
-            img.save(output_file)
-            print(output_file)
+            # Save trimmed image if it exists
+            if trimmed_img:
+                trimmed_img.save(output_file)
+                print(f"Saved: {output_file}")
+            else:
+                print(f"Skipped (no content to crop): {input_file}")
 
 
 if __name__ == "__main__":
-    # This will only be executed when this module is run direcly
+    # This will only be executed when this module is run directly
     from docopt import docopt
 
     main(docopt(__doc__))
