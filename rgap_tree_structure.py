@@ -6,7 +6,7 @@ def list_files_and_contents(startpath, output_file, ignored_dirs=None, ignored_f
     if ignored_dirs is None:
         ignored_dirs = ['node_modules']
     if ignored_files is None:
-        ignored_files = [output_file, 'package-lock.json', '.gitignore']
+        ignored_files = [output_file, 'package-lock.json', '.gitignore', 'pnpm-lock.yaml']
 
     with open(output_file, 'w', encoding='utf-8') as out:
         # First, print the directory structure
@@ -46,7 +46,7 @@ def list_files_and_contents(startpath, output_file, ignored_dirs=None, ignored_f
 
 # Example usage:
 ignored_dirs = ['node_modules', 'venv', '.git', 'dist'] 
-ignored_files = ['package-lock.json', '.gitignore', 'output_structure.txt', '.DS_Store']
+ignored_files = ['package-lock.json', '.gitignore', 'output_structure.txt', '.DS_Store', 'pnpm-lock.yaml']
 
 # Specify the output file name
 output_file = 'output_structure.txt'
