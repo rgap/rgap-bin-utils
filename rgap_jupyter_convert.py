@@ -32,6 +32,7 @@ def convert_notebook_to_script(notebook_path, output_dir="scripts"):
 
 
 if __name__ == "__main__":
+    print("ola")
     parser = argparse.ArgumentParser(
         description="Convert a Jupyter notebook to a Python script."
     )
