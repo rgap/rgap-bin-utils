@@ -1,49 +1,76 @@
 #!/usr/bin/env python3
-"""Trim whitespace (including white or near-white backgrounds) from images in a directory
+"""Trim white or near-white background from images in a directory.
 
 Usage:
-    rgap_imagecrop.py (--c|<input_dir>) <output_dir> [--suffix]
-    rgap_imagecrop.py (--c|<input_dir>) [--suffix]
-
+    rgap_imagecrop.py (--c|<input_dir>) <output_dir> [--suffix] [--tolerance=<n>]
+    rgap_imagecrop.py (--c|<input_dir>) [--suffix] [--tolerance=<n>]
     rgap_imagecrop.py -h
 
 Arguments:
-    input_dir   input directory containing images
-    output_dir  output directory containing images
-    --c         to make input_dir the current directory
+    input_dir   Input directory containing images
+    output_dir  Output directory for cropped images
 
 Options:
-    --suffix    to add a suffix "_cropped" to output filenames.
-
+    --c               Use current directory as input_dir
+    --suffix          Add "_cropped" suffix to output filenames
+    --tolerance=<n>   Near-white threshold from 0-255 [default: 245]
 """
 
 import os
-from PIL import Image, ImageChops
+from PIL import Image
 
 
-def trim(im, tolerance=245):
+def trim(im, tolerance=200, alpha_tolerance=0):
     """
-    Trims white or near-white backgrounds from the image.
+    Crop all white or near-white background from the outer edges of an image.
+
+    A pixel is considered background if:
+    - it is transparent enough, OR
+    - all RGB channels are >= tolerance
+
+    This trims from top, bottom, left, and right using the bounding box
+    of the remaining content.
 
     Args:
-        im (PIL.Image): The input image.
-        tolerance (int): Brightness level to consider as "background" (0-255).
+        im (PIL.Image): Input image.
+        tolerance (int): RGB threshold for near-white background.
+        alpha_tolerance (int): Alpha threshold for transparency.
 
     Returns:
-        PIL.Image or None: Cropped image or None if no content to crop.
+        PIL.Image or None: Cropped image, or None if no non-background content exists.
     """
-    # Convert image to grayscale for easier processing
-    grayscale = im.convert("L")
+    rgba = im.convert("RGBA")
+    pixels = rgba.load()
+    width, height = rgba.size
 
-    # Create a binary mask where white areas are treated as "background"
-    binary_mask = grayscale.point(lambda x: 0 if x > tolerance else 255, mode="1")
+    left = width
+    top = height
+    right = -1
+    bottom = -1
 
-    # Get the bounding box of the non-background content
-    bbox = binary_mask.getbbox()
+    for y in range(height):
+        for x in range(width):
+            r, g, b, a = pixels[x, y]
 
-    if bbox:
-        return im.crop(bbox)
-    return None
+            is_background = (
+                a <= alpha_tolerance or
+                (r >= tolerance and g >= tolerance and b >= tolerance)
+            )
+
+            if not is_background:
+                if x < left:
+                    left = x
+                if x > right:
+                    right = x
+                if y < top:
+                    top = y
+                if y > bottom:
+                    bottom = y
+
+    if right == -1 or bottom == -1:
+        return None
+
+    return im.crop((left, top, right + 1, bottom + 1))
 
 
 def main(args):
@@ -51,51 +78,57 @@ def main(args):
     output_dir = args["<output_dir>"]
     current_directory = args["--c"]
     suffix = args["--suffix"]
+    tolerance = int(args["--tolerance"])
 
-    # Use the current directory if specified
     if current_directory:
         input_dir = os.getcwd()
 
     if not output_dir:
         output_dir = input_dir
-    # Create the output directory if it doesn't exist
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    print(("input_dir = %s\noutput_dir = %s\n") % (input_dir, output_dir))
+    print(f"input_dir = {input_dir}\noutput_dir = {output_dir}\n")
+    print(f"tolerance = {tolerance}\n")
 
-    for input_filename in os.listdir(input_dir):
-        output_filename = input_filename
+    extensions = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp"}
 
-        input_name, input_extension = os.path.splitext(input_filename)
-        # Add suffix if necessary
+    for entry in os.listdir(input_dir):
+        input_file = os.path.join(input_dir, entry)
+
+        if not os.path.isfile(input_file):
+            continue
+
+        input_name, input_extension = os.path.splitext(entry)
+
+        if input_extension.lower() not in extensions:
+            continue
+
+        output_filename = entry
+
         if suffix:
             name_suffix = "_cropped" + input_extension
-            if name_suffix in input_filename:
+            if entry.endswith(name_suffix):
                 continue
             output_filename = input_name + name_suffix
 
-        # Check if it's an image
-        extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff"]
-        is_an_image = any(input_filename.lower().endswith(e) for e in extensions)
-        if is_an_image:
-            input_file = os.path.join(input_dir, input_filename)
-            output_file = os.path.join(output_dir, output_filename)
+        output_file = os.path.join(output_dir, output_filename)
 
-            # Load and trim image
+        try:
             img = Image.open(input_file)
-            trimmed_img = trim(img)
+            trimmed_img = trim(img, tolerance=tolerance)
 
-            # Save trimmed image if it exists
             if trimmed_img:
                 trimmed_img.save(output_file)
                 print(f"Saved: {output_file}")
             else:
-                print(f"Skipped (no content to crop): {input_file}")
+                print(f"Skipped (image is fully white/empty): {input_file}")
+
+        except Exception as e:
+            print(f"Error processing {input_file}: {e}")
 
 
 if __name__ == "__main__":
-    # This will only be executed when this module is run directly
     from docopt import docopt
-
     main(docopt(__doc__))
